@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mvuli Place — Staff Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div id="gate-screen" class="gate">
+  <h2 style="font-size:1.4rem;">Mvuli Place — Staff Admin</h2>
+  <p style="color:var(--ink-soft); font-size:0.9rem; margin-top:10px;">Enter the staff passcode to view inquiries and manage unit availability.</p>
+  <input type="password" id="passcode" placeholder="Passcode">
+  <button class="btn btn-maroon" style="width:100%;" id="gate-submit">Enter</button>
+  <div id="gate-error" style="color:#8A342A; font-size:0.85rem; margin-top:10px;"></div>
+</div>
+
+<div id="admin-screen" class="admin-shell" style="display:none;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+    <div>
+      <h1 style="font-size:1.6rem;">Mvuli Place — Admin</h1>
+      <p style="color:var(--ink-soft); font-size:0.9rem; margin-top:4px;">Inquiries and unit availability</p>
+    </div>
+    <img src="assets/nachu-logo.png" alt="NACHU" style="height:44px;">
+  </div>
+
+  <div class="tabbar">
+    <button class="active" data-tab="inquiries">Inquiries</button>
+    <button data-tab="units">Units</button>
+  </div>
+
+  <div id="tab-inquiries">
+    <div style="overflow-x:auto;">
+      <table class="admin-table" id="inquiries-table">
+        <thead>
+          <tr><th>Date</th><th>Name</th><th>Phone</th><th>Email</th><th>Unit</th><th>Message</th></tr>
+        </thead>
+        <tbody id="inquiries-body">
+          <tr><td colspan="6">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-units" style="display:none;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+      <div id="units-summary" style="font-size:0.9rem; color:var(--ink-soft);"></div>
+      <button class="btn btn-outline" style="border-color:var(--maroon); color:var(--maroon);" id="seed-btn">Seed 120 units (first-time setup)</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="admin-table" id="units-table">
+        <thead>
+          <tr><th>Unit No.</th><th>Floor</th><th>Typology</th><th>Price</th><th>Status</th></tr>
+        </thead>
+        <tbody id="units-body">
+          <tr><td colspan="5">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { generateUnitList, TYPOLOGIES } from "./assets/unit-data.js";
+  import {
+    db, collection, addDoc, doc, setDoc, getDocs, updateDoc, query, orderBy,
+  } from "./assets/firebase-init.js";
+
+  // Simple client-side passcode gate — same pattern as the Riverline
+  // Ridges admin panel. Not real authentication: anyone who reads the
+  // source can see the check. Good enough for an internal staff link
+  // that isn't linked from the public site; upgrade to Firebase Auth
+  // if this needs to be more robust.
+  const PASSCODE = "mvuli2026";
+
+  document.getElementById("gate-submit").addEventListener("click", () => {
+    const val = document.getElementById("passcode").value;
+    if (val === PASSCODE) {
+      document.getElementById("gate-screen").style.display = "none";
+      document.getElementById("admin-screen").style.display = "block";
+      loadInquiries();
+      loadUnits();
+    } else {
+      document.getElementById("gate-error").textContent = "Incorrect passcode.";
+    }
+  });
+
+  document.querySelectorAll(".tabbar button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tabbar button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("tab-inquiries").style.display = btn.dataset.tab === "inquiries" ? "block" : "none";
+      document.getElementById("tab-units").style.display = btn.dataset.tab === "units" ? "block" : "none";
+    });
+  });
+
+  const fmt = (n) => "Ksh " + Number(n).toLocaleString("en-KE");
+
+  async function loadInquiries() {
+    const body = document.getElementById("inquiries-body");
+    try {
+      const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        body.innerHTML = `<tr><td colspan="6">No inquiries yet.</td></tr>`;
+        return;
+      }
+      body.innerHTML = "";
+      snap.forEach(d => {
+        const x = d.data();
+        const date = x.createdAt?.toDate ? x.createdAt.toDate().toLocaleDateString("en-KE") : "—";
+        body.innerHTML += `<tr>
+          <td>${date}</td>
+          <td>${x.name || ""}</td>
+          <td>${x.phone || ""}</td>
+          <td>${x.email || "—"}</td>
+          <td>${x.unitTypology || "—"}</td>
+          <td>${x.message || "—"}</td>
+        </tr>`;
+      });
+    } catch (err) {
+      console.error(err);
+      body.innerHTML = `<tr><td colspan="6">Couldn't load inquiries. Check the Firebase config in assets/firebase-init.js.</td></tr>`;
+    }
+  }
+
+  async function loadUnits() {
+    const body = document.getElementById("units-body");
+    const summary = document.getElementById("units-summary");
+    try {
+      const snap = await getDocs(collection(db, "units"));
+      if (snap.empty) {
+        body.innerHTML = `<tr><td colspan="5">No units found. Click "Seed 120 units" to create them from the known unit mix.</td></tr>`;
+        summary.textContent = "";
+        return;
+      }
+      const docs = [];
+      snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+      docs.sort((a, b) => a.unitNo.localeCompare(b.unitNo));
+
+      const counts = { available: 0, reserved: 0, sold: 0 };
+      docs.forEach(u => counts[u.status] = (counts[u.status] || 0) + 1);
+      summary.textContent = `${docs.length} units — ${counts.available || 0} available, ${counts.reserved || 0} reserved, ${counts.sold || 0} sold`;
+
+      body.innerHTML = "";
+      docs.forEach(u => {
+        body.innerHTML += `<tr data-id="${u.id}">
+          <td>${u.unitNo}</td>
+          <td>${u.floor}</td>
+          <td>${TYPOLOGIES[u.typology]?.label || u.typology}</td>
+          <td>${fmt(u.price)}</td>
+          <td>
+            <select data-id="${u.id}" class="status-select">
+              <option value="available" ${u.status === "available" ? "selected" : ""}>Available</option>
+              <option value="reserved" ${u.status === "reserved" ? "selected" : ""}>Reserved</option>
+              <option value="sold" ${u.status === "sold" ? "selected" : ""}>Sold</option>
+            </select>
+          </td>
+        </tr>`;
+      });
+
+      document.querySelectorAll(".status-select").forEach(sel => {
+        sel.addEventListener("change", async () => {
+          await updateDoc(doc(db, "units", sel.dataset.id), { status: sel.value });
+          loadUnits();
+        });
+      });
+    } catch (err) {
+      console.error(err);
+      body.innerHTML = `<tr><td colspan="5">Couldn't load units. Check the Firebase config in assets/firebase-init.js.</td></tr>`;
+    }
+  }
+
+  document.getElementById("seed-btn").addEventListener("click", async () => {
+    if (!confirm("This creates 120 unit records (Studio, 1BR-A/B/C/D across 10 floors). Run this once only. Continue?")) return;
+    const units = generateUnitList();
+    for (const u of units) {
+      await setDoc(doc(db, "units", u.unitNo), u);
+    }
+    alert("Seeded 120 units.");
+    loadUnits();
+  });
+</script>
+</body>
+</html>
