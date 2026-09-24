@@ -6,7 +6,7 @@
 //
 // Per-floor mix used to hit the building totals (Studio 20, A 60,
 // B 20, C 10, D 10): 2 Studio + 6 A + 2 B + 1 C + 1 D = 12/floor.
-// This distribution is Claude's assumption to give every unit a
+// This distribution is an illustrative assumption to give every unit a
 // number for the admin panel — replace with the real unit register
 // if/when NACHU or Placemakers shares one.
 // -----------------------------------------------------------------
