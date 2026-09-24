@@ -3,13 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#fffefa" />
 <title>Mvuli Place — Apartments in Riruta, Nairobi | NACHU</title>
-<meta name="description" content="Mvuli Place: 120 studio and one-bedroom apartments in Riruta, Nairobi, near The Junction Mall. A NACHU-facilitated development by Placemakers Kenya Ltd. Completion June 2026." />
+<meta name="description" content="Explore Mvuli Place studio and one-bedroom apartments in Riruta, Nairobi. Compare layouts, starting prices and payment stages, then enquire about current availability or book a visit." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+
+<a href="#main-content" class="skip-link">Skip to content</a>
 
 <nav class="nav">
   <div class="wrap">
@@ -30,31 +33,47 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         0708 222 666
       </a>
-      <a href="#contact" class="nav-cta">Book a Visit</a>
+      <a href="#contact" class="nav-cta">Arrange a Viewing</a>
     </div>
+    <button class="nav-menu-toggle" id="nav-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav" hidden>
+    <a href="#about">Overview</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#units">Floor Plans &amp; Pricing</a>
+    <a href="#invest">Investment</a>
+    <a href="#location">Location</a>
+    <a href="#contact">Contact &amp; visits</a>
+    <a href="tel:0708222666" class="mobile-nav-phone">Call 0708 222 666</a>
   </div>
 </nav>
 
+<main id="main-content">
 <header class="hero">
-  <img src="assets/hero-exterior.jpg" alt="Mvuli Place apartment building exterior">
+  <img src="assets/hero-exterior.jpg" alt="Mvuli Place apartment building exterior" fetchpriority="high">
   <div class="hero-content">
-    <div class="status-pill">Under Construction · Completing June 2026</div>
-    <div class="hero-eyebrow">A NACHU-facilitated development, built by Placemakers Kenya Ltd</div>
-    <h1>Riruta, Nairobi — Studio &amp; 1&nbsp;Bedroom Apartments</h1>
-    <p>120 units, 5 minutes from The Junction Mall, 11km from the CBD. From Ksh 2.0M.</p>
+      <div class="status-pill"><span class="status-project">Explore Mvuli Place</span><span class="status-divider">·</span><span>Riruta, Nairobi</span></div>
+      <div class="hero-eyebrow">A NACHU-facilitated development <span>Built by Placemakers Kenya Ltd</span></div>
+    <h1>Find your place in Riruta.</h1>
+    <p>Studio and one-bedroom apartments at Mvuli Place, with five layouts and starting prices from Ksh 2.0M.</p>
     <div class="hero-actions">
-      <a href="#units" class="btn btn-gold">View Floor Plans &amp; Pricing</a>
-      <a href="#contact" class="btn btn-outline">Book a Visit</a>
+      <a href="#units" class="btn btn-gold">Explore apartments <span aria-hidden="true">↗</span></a>
+      <a href="#contact" class="btn btn-outline">Request a viewing</a>
     </div>
   </div>
+  <a href="#about" class="hero-scroll" aria-label="Scroll to discover Mvuli Place"><span></span>Discover the development</a>
 </header>
+
+<div class="mobile-action-bar"><span>Studios from <b>Ksh 2.0M</b></span><a href="#contact">Enquire now <span aria-hidden="true">↗</span></a></div>
 
 <section class="stat-strip">
   <div class="wrap">
     <div class="stat-strip-item"><b>120</b><span>Total units</span></div>
     <div class="stat-strip-item"><b>Ksh 2.0M</b><span>Studios from</span></div>
-    <div class="stat-strip-item"><b>Up to 10%</b><span>Rental yield p.a.</span></div>
-    <div class="stat-strip-item"><b>Jun 2026</b><span>Estimated completion</span></div>
+    <div class="stat-strip-item"><b>5 layouts</b><span>Studio and one-bedroom options</span></div>
+    <div class="stat-strip-item"><b>10 floors</b><span>Designed for everyday living</span></div>
   </div>
 </section>
 
@@ -62,14 +81,35 @@
   <div class="wrap two-col">
     <div>
       <div class="eyebrow">The development</div>
-      <h2>Ten floors, one address, a lot of Nairobi within reach.</h2>
+      <h2>A home base with Nairobi within reach.</h2>
       <div class="prose" style="margin-top:20px;">
-        <p>Mvuli Place is a 10-floor apartment block on Nyakinyua Road, 500 metres off Naivasha Road in Riruta — 11km west of the CBD, and a short matatu ride from Kilimani, Westlands, Upper Hill and town.</p>
-        <p>It's a joint effort: NACHU brings its cooperative housing network and delivery track record, Placemakers Kenya Ltd is building it. The result is a mid-market apartment block aimed at first-time buyers, young professionals, and investors who want a foothold in Nairobi property without a CBD price tag.</p>
-        <p>The building itself covers the basics well — backup power, a borehole, CCTV and manned security, fire systems, high-speed lifts — rather than chasing amenities that push the price out of reach.</p>
+        <p>Mvuli Place is a ten-floor residential development on Nyakinyua Road in Riruta, approximately 500 metres off Naivasha Road. Its studio and one-bedroom layouts offer a practical starting point for buyers who want to stay connected to Nairobi.</p>
+        <p>NACHU facilitates the development, with Placemakers Kenya Ltd as the builder. The project information lists backup power, borehole water, CCTV, staffed security, lifts, fire systems and on-site parking among its planned features.</p>
+        <p>Browse the layouts and indicative payment stages below. For current construction progress, available units and confirmed terms, speak with the project team before making a commitment.</p>
       </div>
     </div>
-    <img src="assets/aerial-exterior.jpg" alt="Aerial view of Mvuli Place">
+    <img src="assets/aerial-exterior.jpg" alt="Architectural aerial rendering of Mvuli Place" loading="lazy" decoding="async">
+  </div>
+</section>
+
+<section class="perspective-section" id="perspective">
+  <div class="wrap perspective-layout">
+    <div class="perspective-copy" data-reveal>
+      <div class="eyebrow">A different perspective</div>
+      <h2>Picture life from a new angle.</h2>
+      <p>Explore the exterior studies in a layered architectural view. It is an illustration of the development, with the original project renderings close at hand.</p>
+      <a class="text-link" href="#gallery">Explore all renderings <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="perspective-stage" id="perspective-stage" role="img" aria-label="Layered perspective animation using three Mvuli Place exterior renderings" data-reveal>
+      <div class="perspective-glow" aria-hidden="true"></div>
+      <div class="perspective-stack" aria-hidden="true">
+        <div class="perspective-card perspective-card-rear"><img src="assets/exterior-angle.jpg" alt="" loading="lazy" decoding="async"></div>
+        <div class="perspective-card perspective-card-middle"><img src="assets/aerial-exterior.jpg" alt="" loading="lazy" decoding="async"></div>
+        <div class="perspective-card perspective-card-front"><img src="assets/hero-exterior.jpg" alt="" loading="lazy" decoding="async"></div>
+        <div class="perspective-label perspective-label-top">Riruta, Nairobi</div>
+        <div class="perspective-label perspective-label-bottom">120 residences · 5 layouts</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -77,48 +117,48 @@
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">Why Mvuli Place</div>
-      <h2>Built on NACHU's delivery record, not just a rendering.</h2>
+      <h2>Everyday essentials, considered from the start.</h2>
     </div>
     <div class="icon-feature-grid">
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 8l10 6 10-6-10-6z"/><path d="M2 12l10 6 10-6"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 8l10 6 10-6-10-6z"/><path d="M2 12l10 6 10-6"/></svg></div>
         <h3>Backed by NACHU</h3>
-        <p>900+ member housing cooperatives and 2,000+ homes delivered — a GOK-shortlisted affordable housing partner.</p>
+        <p>A housing development facilitated by the National Cooperative Housing Union.</p>
       </div>
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
         <h3>Backup generator</h3>
-        <p>Building-wide power backup, so a KPLC outage doesn't stop your evening.</p>
+        <p>Backup power is included in the project specification.</p>
       </div>
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c-3 4-5 6.5-5 10a5 5 0 0010 0c0-3.5-2-6-5-10z"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c-3 4-5 6.5-5 10a5 5 0 0010 0c0-3.5-2-6-5-10z"/></svg></div>
         <h3>Borehole water</h3>
-        <p>Reliable supply that doesn't depend on county mains alone.</p>
+        <p>A borehole is listed as an additional water source.</p>
       </div>
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
         <h3>CCTV &amp; manned security</h3>
-        <p>Surveillance and a staffed gate, day and night.</p>
+        <p>CCTV and staffed security are included in the planned facilities.</p>
       </div>
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="1"/><path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="1"/><path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01"/></svg></div>
         <h3>High-speed lifts</h3>
-        <p>No walk-ups — every floor is a short lift ride away.</p>
+        <p>Lifts are listed among the building's planned facilities.</p>
       </div>
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3 1.19 1.5 2.5 2 3.5 2z"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3 1.19 1.5 2.5 2 3.5 2z"/></svg></div>
         <h3>Fire systems</h3>
-        <p>Complete firefighting and alarm systems throughout the block.</p>
+        <p>Fire safety systems are included in the project specification.</p>
       </div>
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17h14M5 17a2 2 0 01-2-2v-2a2 2 0 012-2h.5l1.5-4h6l1.5 4H19a2 2 0 012 2v2a2 2 0 01-2 2"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17h14M5 17a2 2 0 01-2-2v-2a2 2 0 012-2h.5l1.5-4h6l1.5 4H19a2 2 0 012 2v2a2 2 0 01-2 2"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg></div>
         <h3>On-site parking</h3>
-        <p>Resident parking within the compound, off the street.</p>
+        <p>Resident parking is included in the project plan.</p>
       </div>
       <div class="icon-feature">
-        <div class="icon-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="icon-feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div>
         <h3>Phased payment plan</h3>
-        <p>20% booking, 20% on sale agreement, 50% during construction, 10% on completion.</p>
+        <p>The indicative schedule is 20% booking, 20% on the sale agreement, 50% during construction and 10% on completion.</p>
       </div>
     </div>
   </div>
@@ -128,21 +168,21 @@
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">Gallery</div>
-      <h2>Mvuli Place, in renders.</h2>
-      <p>Click any image to view it larger.</p>
+      <h2>A closer look at Mvuli Place.</h2>
+      <p>Explore the architectural renderings and interior illustrations. Images are illustrative; specifications and finishes should be confirmed with the project team.</p>
     </div>
     <div class="gallery-grid" id="gallery-grid">
-      <img src="assets/hero-exterior.jpg" class="g-wide" alt="Mvuli Place exterior, street view">
-      <img src="assets/aerial-exterior.jpg" alt="Mvuli Place aerial exterior">
-      <img src="assets/exterior-angle.jpg" alt="Mvuli Place exterior, angled view">
-      <img src="assets/onebed-interior.jpg" alt="One bedroom interior layout render">
-      <img src="assets/studio-interior.jpg" alt="Studio interior layout render">
+      <img src="assets/hero-exterior.jpg" class="g-wide" alt="Architectural rendering of Mvuli Place from the street" loading="lazy" decoding="async">
+      <img src="assets/aerial-exterior.jpg" alt="Architectural aerial rendering of Mvuli Place" loading="lazy" decoding="async">
+      <img src="assets/exterior-angle.jpg" alt="Architectural rendering of Mvuli Place from an angle" loading="lazy" decoding="async">
+      <img src="assets/onebed-interior.jpg" alt="Illustrative one-bedroom interior layout" loading="lazy" decoding="async">
+      <img src="assets/studio-interior.jpg" alt="Illustrative studio interior layout" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
 
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lightbox-close">&times;</button>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Project image preview">
+  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close image preview">&times;</button>
   <img id="lightbox-img" src="" alt="">
 </div>
 
@@ -150,42 +190,37 @@
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">Unit types &amp; pricing</div>
-      <h2>Five layouts, one building.</h2>
-      <p>Prices are per unit, starting from. Each typology follows the same phased payment plan — 20% booking, 20% on sale agreement, 50% during construction, 10% on completion.</p>
+      <h2>Find the layout that fits.</h2>
+      <p>Compare area, indicative starting price and the four payment stages for each apartment type. Ask the team to confirm the current price and available units.</p>
     </div>
 
-    <div class="unit-tabs" id="unit-tabs"></div>
-    <div class="unit-panels" id="unit-panels"></div>
+    <div class="unit-tabs" id="unit-tabs" role="group" aria-label="Choose an apartment layout"></div>
+    <div class="unit-panels" id="unit-panels" aria-live="polite"></div>
   </div>
 </section>
 
-<section id="invest" style="background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+<section id="invest">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">For investors</div>
-      <h2>How Mvuli Place stacks up against the rest of Nairobi.</h2>
-      <p>Projected returns by unit type, and how Riruta's yield compares to other Nairobi neighbourhoods buyers usually shortlist.</p>
+      <h2>Look closely at the numbers.</h2>
+      <p>See how the project rent estimates compare with each apartment's starting price. These figures are illustrations for discussion, not a forecast of your return.</p>
     </div>
 
-    <div class="two-col" style="align-items:flex-start;">
+    <div class="two-col invest-layout">
       <div>
-        <div class="unit-tabs" id="invest-tabs"></div>
-        <div class="invest-stat-grid" id="invest-stats"></div>
-        <p style="font-size:0.8rem; color:var(--ink-soft); margin-top:10px;">Total return assumes 5% capital appreciation p.a. on top of rental yield. Figures are NACHU/Placemakers projections, not guarantees.</p>
+        <div class="unit-tabs" id="invest-tabs" role="group" aria-label="Choose a layout for the rent illustration"></div>
+        <div class="invest-stat-grid" id="invest-stats" aria-live="polite"></div>
+        <p class="invest-fineprint">Gross yield is estimated monthly rent × 12 ÷ indicative starting price. It excludes vacancy, service charges, repairs, taxes, financing and transaction costs. Rent estimates are from the project's source material and have not been independently verified.</p>
       </div>
 
-      <div>
-        <div class="eyebrow" style="margin-bottom:18px;">Comparable rental yields, Nairobi</div>
-        <div class="yield-bars">
-          <div class="yield-row"><span>Garden City</span><div class="yield-bar-track"><div class="yield-bar-fill" style="width:100%"></div></div><span>9%</span></div>
-          <div class="yield-row"><span>Westlands</span><div class="yield-bar-track"><div class="yield-bar-fill" style="width:94%"></div></div><span>8.5%</span></div>
-          <div class="yield-row"><span>Kileleshwa</span><div class="yield-bar-track"><div class="yield-bar-fill" style="width:87%"></div></div><span>7.8%</span></div>
-          <div class="yield-row"><span>Langata</span><div class="yield-bar-track"><div class="yield-bar-fill" style="width:81%"></div></div><span>7.3%</span></div>
-          <div class="yield-row"><span>Kiambu Road</span><div class="yield-bar-track"><div class="yield-bar-fill" style="width:75%"></div></div><span>6.72%</span></div>
-          <div class="yield-row"><span>Ruaka</span><div class="yield-bar-track"><div class="yield-bar-fill" style="width:69%"></div></div><span>6.2%</span></div>
-          <div class="yield-row"><span><b>Mvuli Place (studio)</b></span><div class="yield-bar-track"><div class="yield-bar-fill highlight" style="width:100%"></div></div><span><b>10%</b></span></div>
-        </div>
-        <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:20px;">Riruta doesn't have the Westlands or Kilimani address, but it prices in at a fraction of the entry cost — which is what pushes Mvuli Place's studio yield above every established neighbourhood on this list.</p>
+      <div class="invest-explainer" data-reveal>
+        <span class="invest-explainer-number">BEFORE YOU BUY</span>
+        <h3>Start with the full cost, then consider the rent.</h3>
+        <p>Ask for the current price list, unit availability and any charges beyond the purchase price. Request a view of the unit layout and contract terms before paying a booking amount.</p>
+        <div class="invest-explainer-rule"></div>
+        <p>Rental income and property values can rise or fall. The figure shown here is a simple gross estimate, not a guaranteed net return.</p>
+        <a class="text-link" href="#contact">Ask for current details <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </div>
@@ -193,12 +228,12 @@
 
 <section id="location">
   <div class="wrap two-col">
-    <img src="assets/location-map.jpg" alt="Map showing Mvuli Place location in Riruta relative to Nairobi landmarks">
+    <img src="assets/location-map.jpg" alt="Map showing Mvuli Place in Riruta relative to nearby Nairobi landmarks" loading="lazy" decoding="async">
     <div>
       <div class="eyebrow">Location</div>
-      <h2>Riruta — close to town, without town's price tag.</h2>
+      <h2>Connected to the places you use every day.</h2>
       <div class="prose" style="margin: 18px 0 24px;">
-        <p>500m off Naivasha Road on the newly tarmacked Nyakinyua Road, 11km west of the CBD. Several matatu routes run through the area toward Kilimani, Westlands, Upper Hill and town.</p>
+        <p>Mvuli Place is on Nyakinyua Road in Riruta, near Naivasha Road. Use the map as a guide, then confirm travel times and the exact site entrance when arranging a visit.</p>
       </div>
       <ul class="amenity-list">
         <li>The Junction Mall</li>
@@ -212,25 +247,59 @@
   </div>
 </section>
 
+<section id="questions" class="questions-section">
+  <div class="wrap questions-layout">
+    <div class="questions-intro" data-reveal>
+      <div class="eyebrow">Good questions to ask</div>
+      <h2>Clarity before commitment.</h2>
+      <p>Use these answers as a starting point, and ask the project team to confirm the details that matter to you.</p>
+      <a class="text-link" href="#contact">Speak with the team <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="questions-list" data-reveal>
+      <details>
+        <summary>Does sending an enquiry reserve an apartment?</summary>
+        <p>No. An enquiry only starts a conversation. Ask the project team about available units, the sale agreement and the current booking process.</p>
+      </details>
+      <details>
+        <summary>Are the prices and payment stages final?</summary>
+        <p>The prices shown are starting figures from the project information. The displayed 20% / 20% / 50% / 10% schedule is indicative. Request the latest written price list and payment terms before paying.</p>
+      </details>
+      <details>
+        <summary>Are the pictures photographs of finished apartments?</summary>
+        <p>No. The gallery contains architectural and interior renderings. Confirm the current specifications and finishes with the project team.</p>
+      </details>
+      <details>
+        <summary>Can I see a specific floor or unit?</summary>
+        <p>Ask for the latest availability and the plans for the floor you are interested in. The unit numbering in this site is an illustrative planning aid until a confirmed register is supplied.</p>
+      </details>
+      <details>
+        <summary>Is the rental return guaranteed?</summary>
+        <p>No. The investment section shows a gross illustration based on estimated rent and indicative starting price. Actual income and costs will vary.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section id="contact" style="padding-bottom:100px;">
   <div class="wrap">
     <div class="contact-block">
       <div>
-        <h2>Book your unit, or ask us anything.</h2>
-        <p>Leave your details and preferred unit type — a NACHU representative will call you back with the sale agreement and payment schedule.</p>
-        <div class="contact-info-item"><span>Phone</span><b>0708 222 666</b></div>
-        <div class="contact-info-item"><span>Email</span><b>nachu@nachu.or.ke</b></div>
+        <h2>Let's talk about your next step.</h2>
+        <p>Ask about current availability, request a viewing or get the latest written price and payment details.</p>
+        <div class="contact-info-item"><span>Phone</span><b><a href="tel:0708222666">0708 222 666</a></b></div>
+        <div class="contact-info-item"><span>Email</span><b><a href="mailto:nachu@nachu.or.ke">nachu@nachu.or.ke</a></b></div>
         <div class="contact-info-item"><span>Head office</span><b>NACHU Plaza, 15 Kiambere Road, Off Upperhill Road, Nairobi</b></div>
       </div>
-      <form class="inquiry" id="inquiry-form">
-        <label for="name">Full name</label>
-        <input type="text" id="name" required placeholder="Jane Wanjiru">
+      <form class="inquiry" id="inquiry-form" hidden>
+        <p class="form-intro">Tell us what you would like to know. Fields marked required must be completed.</p>
+        <label for="name">Full name <span class="required">Required</span></label>
+        <input type="text" id="name" name="name" autocomplete="name" required placeholder="Jane Wanjiru">
 
-        <label for="phone">Phone number</label>
-        <input type="tel" id="phone" required placeholder="07XX XXX XXX">
+        <label for="phone">Phone number <span class="required">Required</span></label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required pattern="[+0-9() -]{7,20}" title="Enter a phone number with 7 to 20 digits or common phone punctuation" placeholder="+254 7XX XXX XXX">
 
         <label for="email">Email (optional)</label>
-        <input type="email" id="email" placeholder="jane@example.com">
+        <input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="jane@example.com">
 
         <label for="unitType">Unit of interest</label>
         <select id="unitType">
@@ -245,13 +314,21 @@
         <label for="message">Message (optional)</label>
         <textarea id="message" rows="3" placeholder="Any questions about the payment plan, floor, or viewing times?"></textarea>
 
-        <button type="submit" class="btn btn-gold">Send my details</button>
-        <div class="form-note">We'll only use this to contact you about Mvuli Place.</div>
-        <div id="form-status"></div>
+        <button type="submit" class="btn btn-gold" id="inquiry-submit">Send enquiry</button>
+        <div class="form-note">We will use your details to respond to this enquiry. Please do not include payment information.</div>
+        <div id="form-status" role="status" aria-live="polite"></div>
       </form>
+      <div class="contact-fallback" id="inquiry-unavailable">
+        <div class="contact-fallback-icon" aria-hidden="true">↗</div>
+        <h3>Let's start a conversation.</h3>
+        <p>Online enquiries are being set up. Call or email the project team to request availability, a viewing or written pricing details.</p>
+        <a class="btn btn-gold" href="tel:0708222666">Call 0708 222 666</a>
+        <a class="contact-fallback-email" href="mailto:nachu@nachu.or.ke">Email nachu@nachu.or.ke <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="wrap">
@@ -271,6 +348,7 @@
           <li><a href="#units">Floor Plans &amp; Pricing</a></li>
           <li><a href="#invest">Investment</a></li>
           <li><a href="#location">Location</a></li>
+          <li><a href="#questions">Common questions</a></li>
         </ul>
       </div>
       <div>
@@ -299,7 +377,7 @@
 
 <script type="module">
   import { TYPOLOGIES } from "./assets/unit-data.js";
-  import { db, collection, addDoc, serverTimestamp } from "./assets/firebase-init.js";
+  import { db, isFirebaseConfigured, collection, addDoc, serverTimestamp } from "./assets/firebase-init.js";
 
   const unitImages = {
     Studio: "assets/studio-interior.jpg",
@@ -327,35 +405,44 @@
   keys.forEach((key, i) => {
     const t = TYPOLOGIES[key];
     const tab = document.createElement("button");
+    tab.type = "button";
     tab.className = "unit-tab" + (i === 0 ? " active" : "");
     tab.textContent = t.label;
     tab.dataset.key = key;
+    tab.setAttribute("aria-pressed", String(i === 0));
     tab.addEventListener("click", () => showUnit(key));
     tabsEl.appendChild(tab);
   });
 
   function showUnit(key) {
-    document.querySelectorAll(".unit-tab").forEach(b => b.classList.toggle("active", b.dataset.key === key));
+    document.querySelectorAll("#unit-tabs .unit-tab").forEach(b => {
+      const selected = b.dataset.key === key;
+      b.classList.toggle("active", selected);
+      b.setAttribute("aria-pressed", String(selected));
+    });
     const t = TYPOLOGIES[key];
     const rows = paymentRows(t.price).map(([label, amt]) =>
       `<tr><td>${label}</td><td>${fmt(Math.round(amt))}</td></tr>`
     ).join("");
 
     panelsEl.innerHTML = `
-      <div class="unit-card">
-        <img src="${unitImages[key]}" alt="${t.label} interior layout">
+      <div class="unit-card unit-card-enter">
+        <img src="${unitImages[key]}" alt="Illustrative ${t.label} interior layout" loading="lazy" decoding="async">
         <div class="unit-card-body">
+          <div class="eyebrow">Apartment type ${keys.indexOf(key) + 1} / ${keys.length}</div>
           <h3>${t.label}</h3>
           <div class="unit-meta">
             <div><b>${t.sqm} sqm</b><span>Floor area</span></div>
-            <div><b>${fmt(t.price)}</b><span>Starting price</span></div>
+            <div><b>${fmt(t.price)}</b><span>Indicative starting price</span></div>
             <div><b>${t.totalUnits}</b><span>Units in building</span></div>
           </div>
           <table class="plan-table">
+            <caption class="visually-hidden">Indicative payment stages for ${t.label}</caption>
             <thead><tr><th>Payment stage</th><th>Amount</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
-          <a href="#contact" class="btn btn-maroon" style="margin-top:20px;">Enquire about this unit</a>
+          <p class="unit-disclaimer">Confirm the current price, availability and contract terms with the project team.</p>
+          <a href="#contact" class="btn btn-maroon" data-unit-key="${key}">Ask about ${t.label}</a>
         </div>
       </div>
     `;
@@ -365,11 +452,11 @@
 
   // Investment stat cards, per unit type
   const investData = {
-    Studio:   { rent: 17000, yield: 10, ret: 20 },
-    "1BR-A":  { rent: 22000, yield: 8,  ret: 18 },
-    "1BR-B":  { rent: 25000, yield: 8,  ret: 18 },
-    "1BR-C":  { rent: 27000, yield: 9,  ret: 19 },
-    "1BR-D":  { rent: 29000, yield: 9,  ret: 19 },
+    Studio: 17000,
+    "1BR-A": 22000,
+    "1BR-B": 25000,
+    "1BR-C": 27000,
+    "1BR-D": 29000,
   };
 
   const investTabsEl = document.getElementById("invest-tabs");
@@ -378,45 +465,143 @@
   keys.forEach((key, i) => {
     const t = TYPOLOGIES[key];
     const tab = document.createElement("button");
+    tab.type = "button";
     tab.className = "unit-tab" + (i === 0 ? " active" : "");
     tab.textContent = t.label;
     tab.dataset.key = key;
+    tab.setAttribute("aria-pressed", String(i === 0));
     tab.addEventListener("click", () => showInvest(key));
     investTabsEl.appendChild(tab);
   });
 
   function showInvest(key) {
-    document.querySelectorAll("#invest-tabs .unit-tab").forEach(b => b.classList.toggle("active", b.dataset.key === key));
+    document.querySelectorAll("#invest-tabs .unit-tab").forEach(b => {
+      const selected = b.dataset.key === key;
+      b.classList.toggle("active", selected);
+      b.setAttribute("aria-pressed", String(selected));
+    });
     const t = TYPOLOGIES[key];
-    const d = investData[key];
+    const rent = investData[key];
+    const annualRent = rent * 12;
+    const grossYield = (annualRent / t.price * 100).toFixed(1);
     investStatsEl.innerHTML = `
-      <div class="invest-stat"><span>Price</span><b>${fmt(t.price)}</b></div>
-      <div class="invest-stat"><span>Monthly rent (est.)</span><b>${fmt(d.rent)}</b></div>
-      <div class="invest-stat gold"><span>Rental yield p.a.</span><b>${d.yield}%</b></div>
-      <div class="invest-stat gold"><span>Total return</span><b>${d.ret}%</b></div>
+      <div class="invest-stat"><span>Indicative price from</span><b>${fmt(t.price)}</b></div>
+      <div class="invest-stat"><span>Estimated monthly rent</span><b>${fmt(rent)}</b></div>
+      <div class="invest-stat"><span>Estimated annual rent</span><b>${fmt(annualRent)}</b></div>
+      <div class="invest-stat gold"><span>Illustrative gross yield</span><b>${grossYield}%</b></div>
     `;
   }
   showInvest(keys[0]);
 
+  // Keep mobile navigation compact and keyboard-friendly.
+  const menuToggle = document.getElementById("nav-menu-toggle");
+  const mobileNav = document.getElementById("mobile-nav");
+  function setMobileNav(open) {
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+    mobileNav.hidden = !open;
+  }
+  menuToggle.addEventListener("click", () => setMobileNav(menuToggle.getAttribute("aria-expanded") !== "true"));
+  mobileNav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => setMobileNav(false)));
+
+  document.addEventListener("click", event => {
+    const unitLink = event.target.closest("[data-unit-key]");
+    if (unitLink) document.getElementById("unitType").value = unitLink.dataset.unitKey;
+  });
+
   // Gallery lightbox
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
+  let lastLightboxTrigger = null;
+  function openLightbox(img) {
+    lastLightboxTrigger = img;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add("open");
+    document.body.classList.add("lightbox-active");
+    document.getElementById("lightbox-close").focus();
+  }
+  function closeLightbox() {
+    if (!lightbox.classList.contains("open")) return;
+    lightbox.classList.remove("open");
+    document.body.classList.remove("lightbox-active");
+    lightboxImg.removeAttribute("src");
+    lastLightboxTrigger?.focus();
+  }
   document.querySelectorAll("#gallery-grid img").forEach(img => {
+    img.tabIndex = 0;
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", `View larger: ${img.alt}`);
     img.addEventListener("click", () => {
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightbox.classList.add("open");
+      openLightbox(img);
+    });
+    img.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openLightbox(img);
+      }
     });
   });
-  document.getElementById("lightbox-close").addEventListener("click", () => lightbox.classList.remove("open"));
-  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) lightbox.classList.remove("open"); });
+  document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeLightbox();
+      setMobileNav(false);
+    }
+  });
+
+  // Use transform and opacity for lightweight scroll-driven depth and reveals.
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (!reducedMotion.matches && "IntersectionObserver" in window) {
+    document.querySelectorAll(".section-head, .icon-feature, #about .two-col > *, #location .two-col > *").forEach((el, index) => {
+      el.dataset.reveal = "";
+      el.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 55}ms`);
+    });
+    document.documentElement.classList.add("reveal-ready");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -28px 0px" });
+    document.querySelectorAll("[data-reveal]").forEach(el => observer.observe(el));
+
+    const stage = document.getElementById("perspective-stage");
+    let scrollFrame = 0;
+    const updatePerspective = () => {
+      scrollFrame = 0;
+      const bounds = stage.getBoundingClientRect();
+      if (bounds.bottom < 0 || bounds.top > window.innerHeight) return;
+      const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
+      stage.style.setProperty("--scene-rotate", `${(-12 + progress * 21).toFixed(1)}deg`);
+      stage.style.setProperty("--scene-lift", `${(20 - progress * 40).toFixed(1)}px`);
+    };
+    const schedulePerspective = () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(updatePerspective);
+    };
+    window.addEventListener("scroll", schedulePerspective, { passive: true });
+    window.addEventListener("resize", schedulePerspective);
+    schedulePerspective();
+  }
 
   // Contact form -> Firestore
   const form = document.getElementById("inquiry-form");
   const status = document.getElementById("form-status");
+  if (isFirebaseConfigured) {
+    form.hidden = false;
+    document.getElementById("inquiry-unavailable").hidden = true;
+  }
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    status.textContent = "Sending...";
+    if (!isFirebaseConfigured || !form.reportValidity()) return;
+    const submit = document.getElementById("inquiry-submit");
+    submit.disabled = true;
+    submit.textContent = "Sending enquiry…";
+    status.className = "";
+    status.textContent = "Sending your enquiry…";
     try {
       await addDoc(collection(db, "inquiries"), {
         name: document.getElementById("name").value.trim(),
@@ -426,11 +611,16 @@
         message: document.getElementById("message").value.trim(),
         createdAt: serverTimestamp(),
       });
-      status.textContent = "Thanks — we'll be in touch shortly.";
+      status.className = "form-status-success";
+      status.textContent = "Thank you. Your enquiry has been sent. The team can follow up using the details you provided.";
       form.reset();
     } catch (err) {
       console.error(err);
-      status.textContent = "Something went wrong. Please call 0708 222 666 instead.";
+      status.className = "form-status-error";
+      status.textContent = "Your enquiry could not be sent. Please call 0708 222 666 or email nachu@nachu.or.ke.";
+    } finally {
+      submit.disabled = false;
+      submit.textContent = "Send enquiry";
     }
   });
 </script>
