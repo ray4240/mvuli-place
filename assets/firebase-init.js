@@ -18,6 +18,12 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
   getFirestore,
   collection,
   addDoc,
@@ -29,6 +35,7 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  writeBatch,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // TODO: replace with your Mvuli Place Firebase project config
@@ -41,8 +48,16 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID",
 };
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const isFirebaseConfigured = [
+  firebaseConfig.apiKey,
+  firebaseConfig.authDomain,
+  firebaseConfig.projectId,
+  firebaseConfig.appId,
+].every(value => value && !value.startsWith("YOUR_"));
+
+const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
+export const db = app ? getFirestore(app) : null;
+export const auth = app ? getAuth(app) : null;
 
 export {
   collection,
@@ -55,4 +70,8 @@ export {
   query,
   orderBy,
   serverTimestamp,
+  writeBatch,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
 };

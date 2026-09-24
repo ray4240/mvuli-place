@@ -1,106 +1,71 @@
-# Mvuli Place — website
+# Mvuli Place
 
-Marketing site + staff admin panel for NACHU's Mvuli Place development
-(120 studio/1-bedroom apartments, Riruta, Nairobi). Same tech pattern
-as the Riverline Ridges site: plain HTML/CSS/JS, no build step, Firebase
-Firestore as the backend.
+A responsive public website and a staff workspace for the Mvuli Place development in Riruta, Nairobi. The site is plain HTML, CSS and JavaScript, so there is no build step. Firebase Authentication and Firestore are optional until a real project is configured.
 
-## Files
+## Run locally
 
-```
-index.html           Public marketing site (hero, units, pricing, investment, location, contact form)
-admin.html           Passcode-gated staff panel (view inquiries, manage unit availability)
-assets/style.css     Shared styles — NACHU brand colors (maroon/gold/green)
-assets/firebase-init.js   Firebase config + Firestore helper exports
-assets/unit-data.js  Unit typology data + 120-unit numbering generator
-assets/*.jpg/png     Renders, floor plan interiors, location map, NACHU logo
-                     (pulled from the 20260525 NACHU presentation PDF)
+```powershell
+py -m http.server 8080 --bind 127.0.0.1
 ```
 
-## 1. Set up Firebase
+Open `http://127.0.0.1:8080/` for the public site and `http://127.0.0.1:8080/admin.html` for staff.
 
-1. Go to the [Firebase console](https://console.firebase.google.com), create a new project
-   (e.g. `mvuli-place`).
-2. Add a **Web app** to the project (</> icon) — you don't need Hosting or Auth for this.
-3. Copy the `firebaseConfig` object it gives you and paste it into
-   `assets/firebase-init.js`, replacing the placeholder values.
-4. In **Firestore Database**, click "Create database" (production mode is fine).
-5. Under **Firestore > Rules**, start with something like this while you're
-   testing, then lock it down before going fully public:
+Without Firebase settings, the public site displays direct phone and email contact options. The online enquiry form and staff workspace become available only after configuration.
 
-   ```
-   rules_version = '2';
-   service cloud.firestore {
-     match /databases/{database}/documents {
-       // Anyone can submit an inquiry, nobody can read them back publicly
-       match /inquiries/{id} {
-         allow create: if true;
-         allow read, update, delete: if false;
-       }
-       // Anyone can read unit availability, nobody can write from the public site
-       match /units/{id} {
-         allow read: if true;
-         allow write: if false;
-       }
-     }
-   }
-   ```
+## Visual checks without a live database
 
-   This blocks public read access to `inquiries` and public write access to
-   `units` — but it also means `admin.html` can't read/write them either,
-   since the passcode gate is client-side only, not real Firebase Auth.
-   For now, the easiest path is to relax the rules for `inquiries` (allow
-   read) and `units` (allow write) while you're the only one using the
-   admin panel, and revisit with Firebase Auth once more staff need access.
+With the local server running and Google Chrome installed, run:
 
-## 2. Seed the 120 units
-
-The unit numbering (10 floors x 12 units) is **Claude's assumption**, built
-to match the totals in the NACHU presentation (20 Studio, 60 x 1BR-A, 20 x
-1BR-B, 10 x 1BR-C, 10 x 1BR-D) and the typical-floor note ("1 bedroom - 10
-units, Studios - 2 units" per floor). It is not a real unit register from
-NACHU or Placemakers — replace `assets/unit-data.js` if a real one shows up.
-
-1. Open `admin.html` in a browser, enter the passcode `mvuli2026`.
-2. Go to the **Units** tab, click **Seed 120 units (first-time setup)**.
-   Run this once — it will overwrite any existing unit docs with the
-   same IDs.
-3. From then on, toggle each unit's status (Available / Reserved / Sold)
-   from the dropdown in that row.
-
-To change the staff passcode, edit the `PASSCODE` constant near the top
-of the script in `admin.html`.
-
-## 3. Push to GitHub
-
-```bash
-cd mvuli-site
-git init
-git add .
-git commit -m "Initial Mvuli Place site"
-gh repo create mvuli-place --public --source=. --remote=origin --push
+```powershell
+node scripts/visual-qa.mjs
 ```
 
-(Or push to an existing repo the same way you did for Riverline Ridges.)
+This saves viewport screenshots under `%TEMP%\mvuli-visual-qa` for phone, tablet and desktop widths. It also renders the otherwise inaccessible staff sign-in and dashboard using clearly fictional enquiries and units. This is a visual simulation only: it does not sign in, contact Firebase or write project data. Live authentication and Firestore behavior still need an end-to-end check after configuration.
 
-## 4. Host it
+## Project files
 
-Any static host works since there's no build step:
+| File | Purpose |
+| --- | --- |
+| `index.html` | Public site: apartment types, payment illustrations, renderings, location and enquiries |
+| `admin.html` | Staff workspace shell and sign-in form |
+| `assets/style.css` | Shared visual design, motion and responsive layouts |
+| `assets/admin.js` | Staff sign-in, enquiry and unit-management interactions |
+| `assets/unit-data.js` | Source typologies and illustrative 120-unit numbering |
+| `assets/firebase-init.js` | Firebase app configuration and shared SDK exports |
+| `firestore.rules` | Firestore access rules to publish in the Firebase console or CLI |
 
-- **Firebase Hosting** (`firebase init hosting`, `firebase deploy`) —
-  keeps everything in one project.
-- **GitHub Pages** — enable Pages on the repo, point it at the root.
-- **Netlify/Vercel** — drag-and-drop the folder or connect the repo.
+## Configure Firebase before accepting online enquiries
 
-## Notes / open items
+1. Create a Firebase project and add a web app. Copy its web configuration into `assets/firebase-init.js` in place of the `YOUR_...` values.
+2. Enable Cloud Firestore.
+3. Enable **Authentication → Sign-in method → Email/Password**.
+4. Publish the rules in `firestore.rules`. These rules allow public visitors to create a validated enquiry, but only active staff accounts can read enquiries or change unit records.
+5. Create each staff account under **Authentication → Users**. Copy that user's UID.
+6. In Firestore, create `staff/{UID}` with a Boolean field `active: true`. Only a project administrator in the Firebase console should create or change staff records. The site never lets a visitor grant staff access.
+7. Sign in at `admin.html`. Verify enquiry loading and unit controls with the actual Firestore rules in place.
 
-- The images in `assets/` are pulled straight from the NACHU presentation
-  PDF, so they're presentation-quality, not final marketing photography.
-  Swap in higher-res renders when Placemakers/NACHU shares them.
-- The contact form writes to Firestore only — no email/SMS notification
-  is wired up yet. Cheapest way to add one: a Firebase Cloud Function
-  triggered on new `inquiries` docs, or a Zapier/Make automation watching
-  the Firestore collection.
-- `admin.html`'s passcode gate is the same simple pattern used for
-  Riverline Ridges (a hardcoded string) — fine for an internal link
-  that isn't linked from the public site, but not real authentication.
+The web Firebase configuration is a public client identifier. Access protection comes from Authentication and the deployed Firestore rules. A local copy of `firestore.rules` does not enforce anything until published to the Firebase project.
+
+## Unit register and data accuracy
+
+The 120 unit numbers in `assets/unit-data.js` are an **assumption**, derived from a ten-floor / twelve-unit planning mix. They are not an approved unit register. Staff should compare them with the official register before using **Create missing units**. That action preserves any existing records and creates only missing sample numbers.
+
+The five typology areas, starting prices and estimated rents are project-source figures and need written confirmation before launch. Gross yield on the public page is calculated as estimated annual rent divided by the indicative starting price. It is not a net return or a guarantee. Renderings are illustrations, not photographs of completed apartments.
+
+Before publishing, obtain and confirm the latest:
+
+- availability and construction status;
+- written starting prices, charges and payment terms;
+- approved unit register, floor plans and finishes;
+- contact details, site entrance and viewing process;
+- rent assumptions and any buyer-facing investment wording.
+
+The public enquiry form starts a conversation; it does not reserve an apartment or collect payment.
+
+## Security and launch notes
+
+The old client-side passcode has been removed. The staff page now requires Firebase Authentication plus an active `staff/{UID}` record checked by Firestore rules. Do not relax the inquiry read or unit write rules for public visitors.
+
+Public enquiry creation should be monitored for spam. Consider Firebase App Check or a server-side challenge before high-traffic deployment. Add a privacy notice, retention policy and notification workflow appropriate to the project's operating process.
+
+The motion design uses transforms and opacity. It follows the visitor's reduced-motion preference, and the content remains readable without animation.

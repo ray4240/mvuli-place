@@ -1,188 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mvuli Place — Staff Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fffefa">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mvuli Place — Staff Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
-
-<div id="gate-screen" class="gate">
-  <h2 style="font-size:1.4rem;">Mvuli Place — Staff Admin</h2>
-  <p style="color:var(--ink-soft); font-size:0.9rem; margin-top:10px;">Enter the staff passcode to view inquiries and manage unit availability.</p>
-  <input type="password" id="passcode" placeholder="Passcode">
-  <button class="btn btn-maroon" style="width:100%;" id="gate-submit">Enter</button>
-  <div id="gate-error" style="color:#8A342A; font-size:0.85rem; margin-top:10px;"></div>
-</div>
-
-<div id="admin-screen" class="admin-shell" style="display:none;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-    <div>
-      <h1 style="font-size:1.6rem;">Mvuli Place — Admin</h1>
-      <p style="color:var(--ink-soft); font-size:0.9rem; margin-top:4px;">Inquiries and unit availability</p>
+<body class="admin-body">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <a class="admin-brand" href="index.html">
+        <img src="assets/nachu-logo.png" alt="" width="39" height="39">
+        <span>Mvuli Place <small>Staff workspace</small></span>
+      </a>
+      <div class="admin-topbar-actions">
+        <a href="index.html" class="admin-site-link">View public site <span aria-hidden="true">↗</span></a>
+        <button type="button" id="sign-out" class="admin-signout" hidden>Sign out</button>
+      </div>
     </div>
-    <img src="assets/nachu-logo.png" alt="NACHU" style="height:44px;">
-  </div>
+  </header>
 
-  <div class="tabbar">
-    <button class="active" data-tab="inquiries">Inquiries</button>
-    <button data-tab="units">Units</button>
-  </div>
+  <main id="main-content">
+    <section id="setup-screen" class="admin-gate">
+      <div class="admin-gate-mark" aria-hidden="true">01</div>
+      <div class="eyebrow">Staff access</div>
+      <h1>Workspace setup is required.</h1>
+      <p>The project database has not been connected yet. Add the Firebase web configuration, enable staff sign-in, and publish the secure Firestore rules before using this workspace.</p>
+      <a href="index.html" class="btn btn-maroon">Return to the public site</a>
+    </section>
 
-  <div id="tab-inquiries">
-    <div style="overflow-x:auto;">
-      <table class="admin-table" id="inquiries-table">
-        <thead>
-          <tr><th>Date</th><th>Name</th><th>Phone</th><th>Email</th><th>Unit</th><th>Message</th></tr>
-        </thead>
-        <tbody id="inquiries-body">
-          <tr><td colspan="6">Loading...</td></tr>
-        </tbody>
-      </table>
+    <section id="login-screen" class="admin-gate" hidden>
+      <div class="admin-gate-mark" aria-hidden="true">MP</div>
+      <div class="eyebrow">Staff access</div>
+      <h1>Welcome back.</h1>
+      <p>Sign in with the staff account assigned to you for Mvuli Place.</p>
+      <form id="login-form" class="admin-login-form">
+        <label for="staff-email">Email address</label>
+        <input id="staff-email" name="email" type="email" autocomplete="username" required placeholder="you@example.com">
+        <label for="staff-password">Password</label>
+        <input id="staff-password" name="password" type="password" autocomplete="current-password" required placeholder="Enter your password">
+        <button id="login-submit" class="btn btn-maroon" type="submit">Sign in</button>
+        <p id="login-message" class="admin-inline-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <div id="admin-screen" class="admin-workspace" hidden>
+      <div class="admin-heading">
+        <div>
+          <div class="eyebrow">Property operations</div>
+          <h1>Mvuli Place dashboard</h1>
+          <p>Review enquiries and keep unit statuses current.</p>
+        </div>
+        <div class="admin-user-card">
+          <span class="admin-user-dot" aria-hidden="true"></span>
+          <div><small>Signed in as</small><strong id="staff-identity">Staff member</strong></div>
+        </div>
+      </div>
+
+      <div class="admin-metrics" aria-label="Workspace overview">
+        <div class="admin-metric"><span>Enquiries</span><strong id="metric-inquiries">—</strong><small>Received in Firestore</small></div>
+        <div class="admin-metric"><span>Units listed</span><strong id="metric-units">—</strong><small>Based on the current register</small></div>
+        <div class="admin-metric"><span>Available</span><strong id="metric-available">—</strong><small>Available unit records</small></div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="tabbar admin-tabbar" aria-label="Workspace views">
+          <button type="button" class="active" data-tab="inquiries" aria-pressed="true">Enquiries</button>
+          <button type="button" data-tab="units" aria-pressed="false">Units</button>
+        </div>
+
+        <section id="tab-inquiries" class="admin-view" aria-labelledby="inquiries-title">
+          <div class="admin-view-head">
+            <div><h2 id="inquiries-title">Enquiries</h2><p>Messages received through the public enquiry form.</p></div>
+            <button type="button" class="admin-refresh" id="refresh-inquiries">Refresh enquiries</button>
+          </div>
+          <div class="admin-controls">
+            <label for="inquiry-search">Search enquiries</label>
+            <input type="search" id="inquiry-search" placeholder="Search name, phone, unit or message">
+          </div>
+          <div class="admin-table-scroll">
+            <table class="admin-table" id="inquiries-table">
+              <caption class="visually-hidden">Enquiries received from the public website</caption>
+              <thead><tr><th scope="col">Date</th><th scope="col">Name</th><th scope="col">Phone</th><th scope="col">Email</th><th scope="col">Unit</th><th scope="col">Message</th></tr></thead>
+              <tbody id="inquiries-body"><tr><td colspan="6">Loading enquiries…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="tab-units" class="admin-view" aria-labelledby="units-title" hidden>
+          <div class="admin-view-head">
+            <div><h2 id="units-title">Unit register</h2><p>Update availability only after confirming the status with the project team.</p></div>
+            <button type="button" class="admin-refresh" id="refresh-units">Refresh units</button>
+          </div>
+          <div class="admin-controls admin-controls-units">
+            <div><label for="unit-search">Search units</label><input type="search" id="unit-search" placeholder="Unit number or layout"></div>
+            <div><label for="unit-filter">Filter by status</label><select id="unit-filter"><option value="all">All statuses</option><option value="available">Available</option><option value="reserved">Reserved</option><option value="sold">Sold</option></select></div>
+          </div>
+          <p id="units-summary" class="admin-summary"></p>
+          <div class="admin-table-scroll">
+            <table class="admin-table" id="units-table">
+              <caption class="visually-hidden">Unit numbers, layouts, prices and availability statuses</caption>
+              <thead><tr><th scope="col">Unit number</th><th scope="col">Floor</th><th scope="col">Layout</th><th scope="col">Indicative price</th><th scope="col">Status</th></tr></thead>
+              <tbody id="units-body"><tr><td colspan="5">Loading units…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="admin-seed">
+            <div><strong>First-time register setup</strong><p>The 120 unit numbers are an assumed layout from the project brief. Confirm the official register before creating missing records. Existing records will be preserved.</p></div>
+            <button type="button" id="seed-btn" class="btn btn-maroon" disabled>Create missing units</button>
+          </div>
+        </section>
+        <p id="admin-message" class="admin-inline-message" role="status" aria-live="polite"></p>
+      </div>
     </div>
-  </div>
-
-  <div id="tab-units" style="display:none;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-      <div id="units-summary" style="font-size:0.9rem; color:var(--ink-soft);"></div>
-      <button class="btn btn-outline" style="border-color:var(--maroon); color:var(--maroon);" id="seed-btn">Seed 120 units (first-time setup)</button>
-    </div>
-    <div style="overflow-x:auto;">
-      <table class="admin-table" id="units-table">
-        <thead>
-          <tr><th>Unit No.</th><th>Floor</th><th>Typology</th><th>Price</th><th>Status</th></tr>
-        </thead>
-        <tbody id="units-body">
-          <tr><td colspan="5">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<script type="module">
-  import { generateUnitList, TYPOLOGIES } from "./assets/unit-data.js";
-  import {
-    db, collection, addDoc, doc, setDoc, getDocs, updateDoc, query, orderBy,
-  } from "./assets/firebase-init.js";
-
-  // Simple client-side passcode gate — same pattern as the Riverline
-  // Ridges admin panel. Not real authentication: anyone who reads the
-  // source can see the check. Good enough for an internal staff link
-  // that isn't linked from the public site; upgrade to Firebase Auth
-  // if this needs to be more robust.
-  const PASSCODE = "mvuli2026";
-
-  document.getElementById("gate-submit").addEventListener("click", () => {
-    const val = document.getElementById("passcode").value;
-    if (val === PASSCODE) {
-      document.getElementById("gate-screen").style.display = "none";
-      document.getElementById("admin-screen").style.display = "block";
-      loadInquiries();
-      loadUnits();
-    } else {
-      document.getElementById("gate-error").textContent = "Incorrect passcode.";
-    }
-  });
-
-  document.querySelectorAll(".tabbar button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tabbar button").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById("tab-inquiries").style.display = btn.dataset.tab === "inquiries" ? "block" : "none";
-      document.getElementById("tab-units").style.display = btn.dataset.tab === "units" ? "block" : "none";
-    });
-  });
-
-  const fmt = (n) => "Ksh " + Number(n).toLocaleString("en-KE");
-
-  async function loadInquiries() {
-    const body = document.getElementById("inquiries-body");
-    try {
-      const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
-      const snap = await getDocs(q);
-      if (snap.empty) {
-        body.innerHTML = `<tr><td colspan="6">No inquiries yet.</td></tr>`;
-        return;
-      }
-      body.innerHTML = "";
-      snap.forEach(d => {
-        const x = d.data();
-        const date = x.createdAt?.toDate ? x.createdAt.toDate().toLocaleDateString("en-KE") : "—";
-        body.innerHTML += `<tr>
-          <td>${date}</td>
-          <td>${x.name || ""}</td>
-          <td>${x.phone || ""}</td>
-          <td>${x.email || "—"}</td>
-          <td>${x.unitTypology || "—"}</td>
-          <td>${x.message || "—"}</td>
-        </tr>`;
-      });
-    } catch (err) {
-      console.error(err);
-      body.innerHTML = `<tr><td colspan="6">Couldn't load inquiries. Check the Firebase config in assets/firebase-init.js.</td></tr>`;
-    }
-  }
-
-  async function loadUnits() {
-    const body = document.getElementById("units-body");
-    const summary = document.getElementById("units-summary");
-    try {
-      const snap = await getDocs(collection(db, "units"));
-      if (snap.empty) {
-        body.innerHTML = `<tr><td colspan="5">No units found. Click "Seed 120 units" to create them from the known unit mix.</td></tr>`;
-        summary.textContent = "";
-        return;
-      }
-      const docs = [];
-      snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
-      docs.sort((a, b) => a.unitNo.localeCompare(b.unitNo));
-
-      const counts = { available: 0, reserved: 0, sold: 0 };
-      docs.forEach(u => counts[u.status] = (counts[u.status] || 0) + 1);
-      summary.textContent = `${docs.length} units — ${counts.available || 0} available, ${counts.reserved || 0} reserved, ${counts.sold || 0} sold`;
-
-      body.innerHTML = "";
-      docs.forEach(u => {
-        body.innerHTML += `<tr data-id="${u.id}">
-          <td>${u.unitNo}</td>
-          <td>${u.floor}</td>
-          <td>${TYPOLOGIES[u.typology]?.label || u.typology}</td>
-          <td>${fmt(u.price)}</td>
-          <td>
-            <select data-id="${u.id}" class="status-select">
-              <option value="available" ${u.status === "available" ? "selected" : ""}>Available</option>
-              <option value="reserved" ${u.status === "reserved" ? "selected" : ""}>Reserved</option>
-              <option value="sold" ${u.status === "sold" ? "selected" : ""}>Sold</option>
-            </select>
-          </td>
-        </tr>`;
-      });
-
-      document.querySelectorAll(".status-select").forEach(sel => {
-        sel.addEventListener("change", async () => {
-          await updateDoc(doc(db, "units", sel.dataset.id), { status: sel.value });
-          loadUnits();
-        });
-      });
-    } catch (err) {
-      console.error(err);
-      body.innerHTML = `<tr><td colspan="5">Couldn't load units. Check the Firebase config in assets/firebase-init.js.</td></tr>`;
-    }
-  }
-
-  document.getElementById("seed-btn").addEventListener("click", async () => {
-    if (!confirm("This creates 120 unit records (Studio, 1BR-A/B/C/D across 10 floors). Run this once only. Continue?")) return;
-    const units = generateUnitList();
-    for (const u of units) {
-      await setDoc(doc(db, "units", u.unitNo), u);
-    }
-    alert("Seeded 120 units.");
-    loadUnits();
-  });
-</script>
+  </main>
+  <script type="module" src="assets/admin.js"></script>
 </body>
 </html>
