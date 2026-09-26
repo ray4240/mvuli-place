@@ -42,6 +42,7 @@
   <div class="mobile-nav" id="mobile-nav" hidden>
     <a href="#about">Overview</a>
     <a href="#gallery">Gallery</a>
+    <a href="#interiors">Interior concepts</a>
     <a href="#units">Floor Plans &amp; Pricing</a>
     <a href="#invest">Investment</a>
     <a href="#location">Location</a>
@@ -169,7 +170,7 @@
     <div class="section-head">
       <div class="eyebrow">Gallery</div>
       <h2>A closer look at Mvuli Place.</h2>
-      <p>Explore the architectural renderings and interior illustrations. Images are illustrative; specifications and finishes should be confirmed with the project team.</p>
+      <p>Explore the architectural views, then continue into the newly shared interior and layout studies. All images are illustrative; confirm specifications and finishes with the project team.</p>
     </div>
     <div class="gallery-grid" id="gallery-grid">
       <img src="assets/hero-exterior.jpg" class="g-wide" alt="Architectural rendering of Mvuli Place from the street" loading="lazy" decoding="async">
@@ -178,6 +179,55 @@
       <img src="assets/onebed-interior.jpg" alt="Illustrative one-bedroom interior layout" loading="lazy" decoding="async">
       <img src="assets/studio-interior.jpg" alt="Illustrative studio interior layout" loading="lazy" decoding="async">
     </div>
+    <a class="text-link gallery-next-link" href="#interiors">Explore the new interior studies <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
+
+<section id="interiors" class="render-story" aria-labelledby="render-story-title">
+  <div class="render-story-halo" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="render-story-head" data-reveal>
+      <div>
+        <div class="eyebrow">Inside the vision</div>
+        <h2 id="render-story-title">Imagine the everyday, beautifully.</h2>
+      </div>
+      <p>These newly shared renderings bring the rooms and planning studies into focus. They offer a feel for the project—not a promise of the exact layout, furniture or finishes in a particular apartment.</p>
+    </div>
+
+    <div class="render-feature" data-reveal>
+      <div class="render-feature-media">
+        <img src="assets/render-residence-interiors.jpeg" alt="Illustrative collage of a living room, bedroom and bathroom" loading="lazy" decoding="async" data-lightbox>
+        <span class="render-image-tag">Interior concept / 01</span>
+      </div>
+      <div class="render-feature-copy">
+        <span class="render-feature-index">01 — Spaces to settle into</span>
+        <h3>From the first quiet morning to the last light on.</h3>
+        <p>Warm finishes, soft light and room to unwind shape this set of living, sleeping and bathroom illustrations.</p>
+        <p class="render-note">Illustrative room scenes. Furniture, fittings and finishes require confirmation.</p>
+        <a class="text-link" href="#contact">Ask about the specification <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <div class="render-cards">
+      <figure class="render-card" data-reveal>
+        <div class="render-card-media"><img src="assets/render-studio-interiors.jpeg" alt="Illustrative collage showing a kitchenette, sleeping area, workspace and bathroom" loading="lazy" decoding="async" data-lightbox></div>
+        <figcaption><span>02 / Room studies</span><strong>See how daily routines might fit.</strong><p>A set of interior concepts, including places to cook, rest and work.</p></figcaption>
+      </figure>
+      <figure class="render-card" data-reveal>
+        <div class="render-card-media"><img src="assets/render-studio-plan.jpeg" alt="Illustrative top-down furnished apartment study with a sleeping area, workspace, kitchen and bathroom" loading="lazy" decoding="async" data-lightbox></div>
+        <figcaption><span>03 / Furnished layout study</span><strong>View a space from above.</strong><p>A conceptual furnished plan to help picture how one compact home could be arranged.</p></figcaption>
+      </figure>
+    </div>
+
+    <figure class="render-floor" data-reveal>
+      <div class="render-floor-copy">
+        <span>04 / Multi-unit floor study</span>
+        <h3>Explore the bigger picture.</h3>
+        <p>See an illustrative arrangement of homes around a shared corridor. Request the approved floor plan and unit schedule before deciding on a specific apartment.</p>
+      </div>
+      <div class="render-floor-media"><img src="assets/render-typical-floor.jpeg" alt="Illustrative top-down study of multiple apartments arranged around a shared corridor" loading="lazy" decoding="async" data-lightbox></div>
+    </figure>
+    <p class="render-story-disclaimer">The supplied images are concept renderings. They should not be treated as approved plans or as a guarantee of the delivered materials, furniture, dimensions or unit configuration.</p>
   </div>
 </section>
 
@@ -345,6 +395,7 @@
         <ul>
           <li><a href="#about">Overview</a></li>
           <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#interiors">Interior concepts</a></li>
           <li><a href="#units">Floor Plans &amp; Pricing</a></li>
           <li><a href="#invest">Investment</a></li>
           <li><a href="#location">Location</a></li>
@@ -442,6 +493,7 @@
             <tbody>${rows}</tbody>
           </table>
           <p class="unit-disclaimer">Confirm the current price, availability and contract terms with the project team.</p>
+          <a class="unit-concept-link" href="#interiors">See the new interior studies <span aria-hidden="true">↗</span></a>
           <a href="#contact" class="btn btn-maroon" data-unit-key="${key}">Ask about ${t.label}</a>
         </div>
       </div>
@@ -528,7 +580,7 @@
     lightboxImg.removeAttribute("src");
     lastLightboxTrigger?.focus();
   }
-  document.querySelectorAll("#gallery-grid img").forEach(img => {
+  document.querySelectorAll("#gallery-grid img, #interiors img[data-lightbox]").forEach(img => {
     img.tabIndex = 0;
     img.setAttribute("role", "button");
     img.setAttribute("aria-label", `View larger: ${img.alt}`);
@@ -554,7 +606,7 @@
   // Use transform and opacity for lightweight scroll-driven depth and reveals.
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (!reducedMotion.matches && "IntersectionObserver" in window) {
-    document.querySelectorAll(".section-head, .icon-feature, #about .two-col > *, #location .two-col > *").forEach((el, index) => {
+    document.querySelectorAll(".section-head, .icon-feature, #about .two-col > *, #location .two-col > *, .render-story [data-reveal]").forEach((el, index) => {
       el.dataset.reveal = "";
       el.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 55}ms`);
     });
@@ -570,14 +622,22 @@
     document.querySelectorAll("[data-reveal]").forEach(el => observer.observe(el));
 
     const stage = document.getElementById("perspective-stage");
+    const renderStory = document.getElementById("interiors");
     let scrollFrame = 0;
     const updatePerspective = () => {
       scrollFrame = 0;
       const bounds = stage.getBoundingClientRect();
-      if (bounds.bottom < 0 || bounds.top > window.innerHeight) return;
-      const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
-      stage.style.setProperty("--scene-rotate", `${(-12 + progress * 21).toFixed(1)}deg`);
-      stage.style.setProperty("--scene-lift", `${(20 - progress * 40).toFixed(1)}px`);
+      if (bounds.bottom >= 0 && bounds.top <= window.innerHeight) {
+        const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
+        stage.style.setProperty("--scene-rotate", `${(-12 + progress * 21).toFixed(1)}deg`);
+        stage.style.setProperty("--scene-lift", `${(20 - progress * 40).toFixed(1)}px`);
+      }
+      const renderBounds = renderStory.getBoundingClientRect();
+      if (renderBounds.bottom >= 0 && renderBounds.top <= window.innerHeight) {
+        const progress = Math.max(0, Math.min(1, (window.innerHeight - renderBounds.top) / (window.innerHeight + renderBounds.height)));
+        const amplitude = window.innerWidth <= 680 ? 10 : 22;
+        renderStory.style.setProperty("--render-drift", `${(-amplitude + progress * amplitude * 2).toFixed(1)}px`);
+      }
     };
     const schedulePerspective = () => {
       if (!scrollFrame) scrollFrame = requestAnimationFrame(updatePerspective);
