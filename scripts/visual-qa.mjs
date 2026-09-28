@@ -70,12 +70,38 @@ try {
   await send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await send("Page.navigate", { url: "http://127.0.0.1:8080/" });
   await new Promise(resolve => setTimeout(resolve, 750));
-  for (const section of ["perspective", "units", "invest", "questions", "contact"]) {
+  for (const section of ["perspective", "gallery", "interiors", "units", "invest", "questions", "contact"]) {
     await send("Runtime.evaluate", { expression: `document.getElementById(${JSON.stringify(section)}).scrollIntoView({behavior:'instant'})` });
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 900));
     const image = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
     await writeFile(join(outputDir, `home-390-${section}.png`), Buffer.from(image.data, "base64"));
   }
+  for (const [name, selector] of [["interior-cards", "#interiors .render-cards"], ["interior-floor", "#interiors .render-floor"]]) {
+    await send("Runtime.evaluate", { expression: `document.querySelector(${JSON.stringify(selector)}).scrollIntoView({behavior:'instant'})` });
+    await new Promise(resolve => setTimeout(resolve, 900));
+    const image = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
+    await writeFile(join(outputDir, `home-390-${name}.png`), Buffer.from(image.data, "base64"));
+  }
+  const { result: previewResult } = await send("Runtime.evaluate", {
+    expression: "(() => { document.querySelector('#interiors img[data-lightbox]').click(); const opened = document.getElementById('lightbox').classList.contains('open'); const alt = document.getElementById('lightbox-img').alt; document.getElementById('lightbox-close').click(); return {opened, closed: !document.getElementById('lightbox').classList.contains('open'), alt}; })()",
+    returnByValue: true,
+  });
+  console.log("interior-lightbox", JSON.stringify(previewResult.value));
+  for (const width of [280, 768]) {
+    await send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width < 600 });
+    await send("Page.navigate", { url: "http://127.0.0.1:8080/#interiors" });
+    await new Promise(resolve => setTimeout(resolve, 900));
+    await send("Runtime.evaluate", { expression: "document.getElementById('interiors').scrollIntoView({behavior:'instant'})" });
+    await new Promise(resolve => setTimeout(resolve, 900));
+    const image = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
+    await writeFile(join(outputDir, `home-${width}-interiors.png`), Buffer.from(image.data, "base64"));
+  }
+  await send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
+  await send("Page.navigate", { url: "http://127.0.0.1:8080/#interiors" });
+  await new Promise(resolve => setTimeout(resolve, 700));
+  await send("Runtime.evaluate", { expression: "document.getElementById('interiors').scrollIntoView({behavior:'instant'})" });
+  const interiorDesktop = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
+  await writeFile(join(outputDir, "home-1440-interiors.png"), Buffer.from(interiorDesktop.data, "base64"));
 
   const dashboardFixture = `(() => {
     document.getElementById('setup-screen').hidden = true;

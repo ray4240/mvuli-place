@@ -32,6 +32,7 @@ This saves viewport screenshots under `%TEMP%\mvuli-visual-qa` for phone, tablet
 | `assets/admin.js` | Staff sign-in, enquiry and unit-management interactions |
 | `assets/unit-data.js` | Source typologies and illustrative 120-unit numbering |
 | `assets/firebase-init.js` | Firebase app configuration and shared SDK exports |
+| `assets/render-*.jpeg` | Four client-supplied interior and layout studies used in the public visual story |
 | `firestore.rules` | Firestore access rules to publish in the Firebase console or CLI |
 
 ## Configure Firebase before accepting online enquiries
@@ -51,6 +52,8 @@ The web Firebase configuration is a public client identifier. Access protection 
 The 120 unit numbers in `assets/unit-data.js` are an **assumption**, derived from a ten-floor / twelve-unit planning mix. They are not an approved unit register. Staff should compare them with the official register before using **Create missing units**. That action preserves any existing records and creates only missing sample numbers.
 
 The five typology areas, starting prices and estimated rents are project-source figures and need written confirmation before launch. Gross yield on the public page is calculated as estimated annual rent divided by the indicative starting price. It is not a net return or a guarantee. Renderings are illustrations, not photographs of completed apartments.
+
+The four additional render sheets supplied on 26 September 2026 are presented as concept illustrations. They are not linked to a specific saleable unit and should not be described as approved plans or guaranteed delivered finishes.
 
 Before publishing, obtain and confirm the latest:
 
