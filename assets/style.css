@@ -108,19 +108,41 @@ a { color: inherit; }
   color: #fff;
   overflow: hidden;
 }
-.hero img {
+.hero .slideshow-bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
+  z-index: 0;
 }
+
+.hero .slideshow-bg .slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.hero .slideshow-bg .slide.active {
+  opacity: 1;
+}
+
 .hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(43,36,32,.15) 0%, rgba(43,36,32,.35) 55%, rgba(20,14,11,.88) 100%);
+  background: linear-gradient(180deg, rgba(43, 36, 32, 0.15) 0%, rgba(43, 36, 32, 0.35) 55%, rgba(20, 14, 11, 0.85) 100%);
+  z-index: 1;
+}
+
+.hero-content,
+.hero-scroll {
+  position: relative;
+  z-index: 2;
 }
 .hero-content {
   position: relative;
@@ -1505,4 +1527,60 @@ table.admin-table select { min-width: 118px; min-height: 35px; padding: 6px 8px;
 
 @media (prefers-reduced-motion: reduce) {
   .render-story-halo, .render-feature-media img, .render-card-media img, .render-floor-media img { transform: none !important; transition: none !important; }
+}
+/* Gallery Slideshow Styles */
+.section-slideshow {
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slideshow-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.slideshow-bg .slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+  transform: scale(1.05);
+}
+
+.slideshow-bg .slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.slideshow-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 2;
+}
+
+.section-content {
+  position: relative;
+  z-index: 3;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
 }

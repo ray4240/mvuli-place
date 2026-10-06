@@ -30,16 +30,14 @@
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-right">
-      <a href="tel:0708222666" class="nav-phone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        0708 222 666
-      </a>
-      <a href="#contact" class="nav-cta">Arrange a Viewing</a>
-    </div>
-    <button class="nav-menu-toggle" id="nav-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
-      <span></span><span></span>
-    </button>
-  </div>
+    <div class="nav-right">
+        <a href="#contact" class="btn btn-primary nav-cta">Arrange a Viewing</a>
+        <button class="nav-menu-toggle" id="nav-menu-toggle" type="button" aria-label="Open navigation menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div> <!-- closes div.wrap -->
+  </nav> <!-- closes nav.nav -->
   <div class="mobile-nav" id="mobile-nav" hidden>
     <a href="#about">Overview</a>
     <a href="#gallery">Gallery</a>
@@ -54,17 +52,24 @@
 
 <main id="main-content">
 <header class="hero">
-  <img src="assets/hero-exterior.jpg" alt="Mvuli Place apartment building exterior" fetchpriority="high">
+  <div class="slideshow-bg">
+    <div class="slide active" style="background-image: url('assets/hero-exterior.jpg');"></div>
+    <div class="slide" style="background-image: url('assets/onebed-interior.jpg');"></div>
+    <div class="slide" style="background-image: url('assets/render-residence-interior.jpg');"></div>
+    <div class="slide" style="background-image: url('assets/studio-interior.jpg');"></div>
+  </div>
+
   <div class="hero-content">
-      <div class="status-pill"><span class="status-project">Explore Mvuli Place</span><span class="status-divider">·</span><span>Riruta, Nairobi</span></div>
-      <div class="hero-eyebrow">A Project by NACHU <span>Built by Placemakers Kenya Ltd</span></div>
-    <h1>Find your place in Riruta.</h1>
+    <div class="status-pill"><span class="status-project">Explore Mvuli Place</span><span class="status-c">...</span></div>
+    <div class="hero-eyebrow">A Project by NACHU <span>Built by Placemakers Kenya Ltd</span></div>
+    <h1>Smart Living. Smarter Investment in Riruta.</h1>
     <p>Modern studio & 1-bedroom apartments designed for contemporary urban living. Starting from Ksh 2.0M.</p>
     <div class="hero-actions">
-      <a href="#units" class="btn btn-gold">Explore apartments <span aria-hidden="true">↗</span></a>
+      <a href="#units" class="btn btn-gold">Explore apartments <span aria-hidden="true">&rsaquo;</span></a>
       <a href="#contact" class="btn btn-outline">Request a viewing</a>
     </div>
   </div>
+
   <a href="#about" class="hero-scroll" aria-label="Scroll to discover Mvuli Place"><span></span>Discover the development</a>
 </header>
 
@@ -96,6 +101,25 @@
       <img src="assets/exterior-angle.jpg" alt="" loading="lazy" decoding="async">
       <div class="about-rotator-dots" id="about-rotator-dots"></div>
     </div>
+  </div>
+</section>
+<section id="gallery" class="section-slideshow">
+  <!-- Slideshow Background -->
+  <div class="slideshow-bg">
+    <div class="slide active" style="background-image: url('assets/gallery-1.jpeg');"></div>
+    <div class="slide" style="background-image: url('assets/gallery-2.jpeg');"></div>
+    <div class="slide" style="background-image: url('assets/gallery-3.jpeg');"></div>
+    <div class="slide" style="background-image: url('assets/gallery-4.jpeg');"></div>
+    <div class="slide" style="background-image: url('assets/gallery-5.jpeg');"></div>
+    <div class="slide" style="background-image: url('assets/gallery-6.jpeg');"></div>
+    <div class="slide" style="background-image: url('assets/gallery-7.jpeg');"></div>
+    <div class="slide" style="background-image: url('assets/gallery-8.jpeg');"></div>
+  </div>
+
+  <!-- Content overlay -->
+  <div class="section-content">
+    <h2>Gallery</h2>
+    <p>Explore our modern interiors and living spaces.</p>
   </div>
 </section>
 
@@ -725,7 +749,26 @@
       submit.disabled = false;
       submit.textContent = "Send enquiry";
     }
-  });
+ });
+</script>
+
+<script>
+  (function () {
+    const containers = document.querySelectorAll('.slideshow-bg');
+    
+    containers.forEach((container) => {
+      const slides = container.querySelectorAll('.slide');
+      if (!slides.length) return;
+
+      let currentSlide = 0;
+
+      setInterval(function () {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }, 4000);
+    });
+  })();
 </script>
 </body>
 </html>
