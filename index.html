@@ -52,12 +52,15 @@
 
 <main id="main-content">
 <header class="hero">
-  <div class="slideshow-bg">
-    <div class="slide active" style="background-image: url('assets/hero-exterior.jpg');"></div>
-    <div class="slide" style="background-image: url('assets/onebed-interior.jpg');"></div>
-    <div class="slide" style="background-image: url('assets/render-residence-interior.jpg');"></div>
-    <div class="slide" style="background-image: url('assets/studio-interior.jpg');"></div>
-  </div>
+ <div class="slideshow-bg">
+  <div class="slide active" style="background-image: url('assets/site-progress-1.jpeg');"></div>
+  <div class="slide" style="background-image: url('assets/site-progress-2.jpeg');"></div>
+  <div class="slide" style="background-image: url('assets/site-progress-3.jpeg');"></div>
+  <div class="slide" style="background-image: url('assets/junction-mall-1.jpg');"></div>
+  <div class="slide" style="background-image: url('assets/moi-highschool.jpg');"></div>
+  <div class="slide" style="background-image: url('assets/talanta-stadium.webp');"></div>
+  <div class="slide" style="background-image: url('assets/karen-hospital.jpg');"></div>
+</div>
 
   <div class="hero-content">
     <div class="status-pill"><span class="status-project">Explore Mvuli Place</span><span class="status-c">...</span></div>
@@ -308,9 +311,9 @@
 
 <section id="location">
   <div class="wrap two-col">
-    <img src="assets/location-map.jpg" alt="Map showing Mvuli Place in Riruta relative to nearby Nairobi landmarks" loading="lazy" decoding="async">
-    <div>
-      <div class="eyebrow">Location</div>
+    <a href="https://www.google.com/maps/search/?api=1&query=Placemakers+Riruta+Nairobi&query_place_id=ChIJ1fPod1obLxgR2C8YLszipkE" target="_blank" rel="noopener noreferrer" class="map-link-wrapper" aria-label="View Placemakers Riruta on Google Maps">
+  <img src="assets/location-map.jpg" alt="Map showing Mvuli Place in Riruta relative to nearby Nairobi landmarks">
+</a>
       <h2>Connected to the places you use every day.</h2>
       <div class="prose" style="margin: 18px 0 24px;">
         <p>Mvuli Place is on Nyakinyua Road in Riruta, near Naivasha Road. Use the map as a guide, then confirm travel times and the exact site entrance when arranging a visit.</p>
@@ -370,43 +373,32 @@
         <div class="contact-info-item"><span>Email</span><b><a href="mailto:nachu@nachu.or.ke">nachu@nachu.or.ke</a></b></div>
         <div class="contact-info-item"><span>Head office</span><b>NACHU Plaza, 15 Kiambere Road, Off Upperhill Road, Nairobi</b></div>
       </div>
-      <form class="inquiry" id="inquiry-form" hidden>
-        <p class="form-intro">Tell us what you would like to know. Fields marked required must be completed.</p>
-        <label for="name">Full name <span class="required">Required</span></label>
-        <input type="text" id="name" name="name" autocomplete="name" required placeholder="Jane Wanjiru">
+      <form class="inquiry" id="inquiry-form" onsubmit="sendToWhatsApp(event)">
+  <p class="form-intro">Tell us what you would like to know. Fields marked required must be completed.</p>
+  
+  <label for="name">Full name <span class="required">Required</span></label>
+  <input type="text" id="name" name="name" autocomplete="name" required placeholder="Jane Wanjiru">
 
-        <label for="phone">Phone number <span class="required">Required</span></label>
-        <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required pattern="[+0-9() -]{7,20}" title="Enter a phone number with 7 to 20 digits or common phone punctuation" placeholder="+254 7XX XXX XXX">
+  <label for="phone">Phone number <span class="required">Required</span></label>
+  <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0712 345 678">
 
-        <label for="email">Email (optional)</label>
-        <input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="jane@example.com">
+  <label for="unit-type">Unit of interest</label>
+  <select id="unit-type" name="unit-type" style="width: 100%; padding: 12px; margin-bottom: 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: #fff;">
+    <option value="Studio Apartment" style="color: #000;">Studio Apartment</option>
+    <option value="1 Bedroom Apartment" style="color: #000;">1 Bedroom Apartment</option>
+    <option value="General Inquiry / Pricing" style="color: #000;">General Inquiry / Pricing</option>
+  </select>
 
-        <label for="unitType">Unit of interest</label>
-        <select id="unitType">
-          <option value="Studio">Studio — from Ksh 2.0M</option>
-          <option value="1BR-A">One Bedroom A — from Ksh 3.5M</option>
-          <option value="1BR-B">One Bedroom B — from Ksh 3.6M</option>
-          <option value="1BR-C">One Bedroom C — from Ksh 3.8M</option>
-          <option value="1BR-D">One Bedroom D — from Ksh 3.9M</option>
-          <option value="Not sure">Not sure yet</option>
-        </select>
+  <label for="message">Message (optional)</label>
+  <textarea id="message" name="message" rows="3" placeholder="When would you like to arrange a viewing?"></textarea>
 
-        <label for="message">Message (optional)</label>
-        <textarea id="message" rows="3" placeholder="Any questions about the payment plan, floor, or viewing times?"></textarea>
-
-        <button type="submit" class="btn btn-gold" id="inquiry-submit">Send enquiry</button>
-        <div class="form-note">We will use your details to respond to this enquiry. Please do not include payment information.</div>
-        <div id="form-status" role="status" aria-live="polite"></div>
-      </form>
-      <div class="contact-fallback" id="inquiry-unavailable">
-        <div class="contact-fallback-icon" aria-hidden="true">↗</div>
-        <h3>Let's start a conversation.</h3>
-        <p>Online enquiries are being set up. Call or email the project team to request availability, a viewing or written pricing details.</p>
-        <a class="btn btn-gold" href="tel:0708222666">Call 0708 222 666</a>
-        <a class="contact-fallback-email" href="mailto:nachu@nachu.or.ke">Email nachu@nachu.or.ke <span aria-hidden="true">↗</span></a>
-      </div>
-    </div>
-  </div>
+  <button type="submit" class="btn" style="width: 100%; background: #25D366; color: #fff; font-weight: bold; margin-top: 12px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984 0 1.762.459 3.48 1.333 5.001l-1.416 5.172 5.294-1.388c1.472.802 3.136 1.225 4.775 1.226h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.038-5.176-2.925-7.062a9.925 9.925 0 0 0-7.059-2.949zm5.71 14.152c-.236.666-1.373 1.275-1.902 1.333-.488.052-1.127.078-1.815-.143-.418-.135-.956-.312-1.639-.607-2.887-1.248-4.767-4.179-4.912-4.372-.144-.193-1.176-1.564-1.176-2.983 0-1.419.743-2.118 1.008-2.404.265-.286.577-.358.77-.358.193 0 .385.002.553.01.178.008.418-.067.653.498.241.579.818 1.993.89 2.138.072.145.12.313.024.505-.096.192-.144.312-.288.481-.144.168-.303.376-.433.505-.144.144-.295.302-.127.591.168.289.747 1.232 1.603 1.993 1.101.979 2.031 1.282 2.32 1.426.289.144.457.12.625-.072.168-.192.721-.841.913-1.129.192-.289.385-.241.649-.144.264.096 1.681.792 1.969.936.288.144.48.216.552.336.072.12.072.696-.164 1.362z"/>
+    </svg>
+    Send Enquiry via WhatsApp
+  </button>
+</form>
 </section>
 </main>
 
