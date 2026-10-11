@@ -762,5 +762,130 @@
     });
   })();
 </script>
+<!-- Floating AI Assistant Button -->
+<button id="ai-chat-toggle" aria-label="Open AI Assistant" style="position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%; background: #2b2420; color: #d4af37; border: 2px solid #d4af37; cursor: pointer; box-shadow: 0 4px 18px rgba(0,0,0,0.4); z-index: 1000; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+  💬
+</button>
+
+<!-- AI Chat Drawer -->
+<div id="ai-chat-drawer" hidden style="position: fixed; bottom: 90px; right: 24px; width: 340px; height: 460px; background: #1a1512; border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; font-family: sans-serif;">
+  <div style="background: #2b2420; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <strong style="color: #fff; font-size: 0.95rem; display: block;">Mvuli Place AI Assistant</strong>
+      <span style="color: #25D366; font-size: 0.75rem;">● Online & Instant</span>
+    </div>
+    <button id="ai-chat-close" style="background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.4rem;">&times;</button>
+  </div>
+  
+  <div id="chat-messages" style="flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+    <div style="background: rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: #ddd; max-width: 85%;">
+      Habari! Ask me anything about unit layouts, prices, site location, or payment options!
+    </div>
+  </div>
+
+  <form id="chat-form" style="padding: 10px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 6px; background: #140e0b;">
+    <input type="text" id="ai-input" placeholder="Type your question..." required style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: #000; color: #fff; font-size: 0.85rem; outline: none;">
+    <button type="submit" style="background: #d4af37; color: #000; font-weight: bold; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Send</button>
+  </form>
+</div>
+<script type="module">
+  // 1. Imports at the top
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  // 2. Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDJ-OOvLHZrniYmn8T7j_YsqdRVNtTBh1c",
+    authDomain: "mvuli-place.firebaseapp.com",
+    projectId: "mvuli-place",
+    storageBucket: "mvuli-place.firebasestorage.app",
+    messagingSenderId: "754736646011",
+    appId: "1:754736646011:web:ba81b5b0412c6675d51fde",
+    measurementId: "G-TF77VEPRSG"
+  };
+
+  // 3. Initialize Firebase & Auth
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  // 4. Get UI Elements
+  const loginBtn = document.getElementById('google-login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  const userProfile = document.getElementById('user-profile');
+
+  // 5. Auth Event Listeners
+  if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      signInWithPopup(auth, provider).catch(error => console.error("Auth Error:", error));
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => signOut(auth));
+  }
+
+  // 6. Monitor Auth State
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      if (loginBtn) loginBtn.style.display = 'none';
+      if (userProfile) {
+        userProfile.hidden = false;
+        document.getElementById('user-avatar').src = user.photoURL || 'assets/mvuli-logo.png';
+        document.getElementById('user-name').textContent = user.displayName ? user.displayName.split(' ')[0] : 'User';
+      }
+    } else {
+      if (loginBtn) loginBtn.style.display = 'flex';
+      if (userProfile) userProfile.hidden = true;
+    }
+  });
+</script>
+
+<script>
+  // AI FAQ Chat Logic
+  (function() {
+    const toggleBtn = document.getElementById('ai-chat-toggle');
+    const closeBtn = document.getElementById('ai-chat-close');
+    const chatDrawer = document.getElementById('ai-chat-drawer');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('ai-input');
+    const messagesBox = document.getElementById('chat-messages');
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => chatDrawer.hidden = !chatDrawer.hidden);
+      closeBtn.addEventListener('click', () => chatDrawer.hidden = true);
+
+      const knowledgeBase = [
+        { keywords: ['price', 'cost', 'ksh', 'starting', '2.0m'], response: "Apartments at Mvuli Place start from Ksh 2.0M for Studio units and Ksh 3.5M for 1-Bedroom units." },
+        { keywords: ['location', 'where', 'riruta', 'address', 'junction'], response: "Mvuli Place is located on Nyakinyua Road in Riruta, off Naivasha Road — 10 minutes from The Junction Mall." },
+        { keywords: ['viewing', 'visit', 'book', 'see'], response: "You can book a site viewing on WhatsApp at 0708 222 666 or through our contact form!" }
+      ];
+
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = chatInput.value.trim();
+        if (!query) return;
+
+        messagesBox.innerHTML += `<div style="align-self: flex-end; background: #d4af37; color: #000; font-weight: 500; padding: 8px 12px; border-radius: 8px; max-width: 85%;">${query}</div>`;
+        chatInput.value = '';
+        messagesBox.scrollTop = messagesBox.scrollHeight;
+
+        let reply = "For specific bookings or inquiries, please contact our team directly on WhatsApp at 0708 222 666.";
+        const lowerQuery = query.toLowerCase();
+        for (const item of knowledgeBase) {
+          if (item.keywords.some(kw => lowerQuery.includes(kw))) {
+            reply = item.response;
+            break;
+          }
+        }
+
+        setTimeout(() => {
+          messagesBox.innerHTML += `<div style="background: rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: #ddd; max-width: 85%;">${reply}</div>`;
+          messagesBox.scrollTop = messagesBox.scrollHeight;
+        }, 350);
+      });
+    }
+  })();
+</script>
 </body>
 </html>
