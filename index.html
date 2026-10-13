@@ -381,42 +381,52 @@
   </div>
 </section>
 
-<section id="contact" style="padding-bottom:100px;">
-  <div class="wrap">
-    <div class="contact-block">
-      <div>
-        <h2>Let's talk about your next step.</h2>
-        <p>Ask about current availability, request a viewing or get the latest written price and payment details.</p>
-        <div class="contact-info-item"><span>Phone</span><b><a href="tel:0708222666">0708 222 666</a></b></div>
-        <div class="contact-info-item"><span>Email</span><b><a href="mailto:nachu@nachu.or.ke">nachu@nachu.or.ke</a></b></div>
-        <div class="contact-info-item"><span>Head office</span><b>NACHU Plaza, 15 Kiambere Road, Off Upperhill Road, Nairobi</b></div>
-      </div>
-      <form class="inquiry" id="inquiry-form" onsubmit="sendToWhatsApp(event)">
-  <p class="form-intro">Tell us what you would like to know. Fields marked required must be completed.</p>
-  
-  <label for="name">Full name <span class="required">Required</span></label>
-  <input type="text" id="name" name="name" autocomplete="name" required placeholder="Jane Wanjiru">
+<section id="contact">
+  <div class="wrap two-col">
+    <div>
+      <div class="eyebrow">Get in touch</div>
+      <h2>Let's talk about your next step.</h2>
+      <p>Ask about current availability, request a viewing or get the latest written price and payment details.</p>
+      <!-- Contact details ... -->
+    </div>
+    <div>
+      <form id="inquiry-form">
+        <div>
+          <label>Full name <span style="color: #ea4335;">Required</span></label>
+          <input type="text" id="name" placeholder="David Hamisi" required />
+        </div>
 
-  <label for="phone">Phone number <span class="required">Required</span></label>
-  <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0712 345 678">
+        <div>
+          <label>Phone number <span style="color: #ea4335;">Required</span></label>
+          <input type="tel" id="phone" placeholder="+254704423457" required />
+        </div>
 
-  <label for="unit-type">Unit of interest</label>
-  <select id="unit-type" name="unit-type" style="width: 100%; padding: 12px; margin-bottom: 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: #fff;">
-    <option value="Studio Apartment" style="color: #000;">Studio Apartment</option>
-    <option value="1 Bedroom Apartment" style="color: #000;">1 Bedroom Apartment</option>
-    <option value="General Inquiry / Pricing" style="color: #000;">General Inquiry / Pricing</option>
-  </select>
+        <div>
+          <label>Email</label>
+          <input type="email" id="email" placeholder="david@example.com" />
+        </div>
 
-  <label for="message">Message (optional)</label>
-  <textarea id="message" name="message" rows="3" placeholder="When would you like to arrange a viewing?"></textarea>
+        <div>
+          <label>Unit of interest</label>
+          <select id="unitType">
+            <option value="Studio Apartment">Studio Apartment</option>
+            <option value="1-Bedroom Apartment">1-Bedroom Apartment</option>
+          </select>
+        </div>
 
-  <button type="submit" class="btn" style="width: 100%; background: #25D366; color: #fff; font-weight: bold; margin-top: 12px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984 0 1.762.459 3.48 1.333 5.001l-1.416 5.172 5.294-1.388c1.472.802 3.136 1.225 4.775 1.226h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.038-5.176-2.925-7.062a9.925 9.925 0 0 0-7.059-2.949zm5.71 14.152c-.236.666-1.373 1.275-1.902 1.333-.488.052-1.127.078-1.815-.143-.418-.135-.956-.312-1.639-.607-2.887-1.248-4.767-4.179-4.912-4.372-.144-.193-1.176-1.564-1.176-2.983 0-1.419.743-2.118 1.008-2.404.265-.286.577-.358.77-.358.193 0 .385.002.553.01.178.008.418-.067.653.498.241.579.818 1.993.89 2.138.072.145.12.313.024.505-.096.192-.144.312-.288.481-.144.168-.303.376-.433.505-.144.144-.295.302-.127.591.168.289.747 1.232 1.603 1.993 1.101.979 2.031 1.282 2.32 1.426.289.144.457.12.625-.072.168-.192.721-.841.913-1.129.192-.289.385-.241.649-.144.264.096 1.681.792 1.969.936.288.144.48.216.552.336.072.12.072.696-.164 1.362z"/>
-    </svg>
-    Send Enquiry via WhatsApp
-  </button>
-</form>
+        <div>
+          <label>Message (optional)</label>
+          <textarea id="message" placeholder="What are the sizes?"></textarea>
+        </div>
+
+        <div id="form-status" style="margin-bottom: 12px; font-weight: 600;"></div>
+
+        <button type="submit" id="inquiry-submit" class="btn btn-maroon" style="width: 100%;">
+          Send Enquiry via WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
 </section>
 </main>
 
@@ -714,67 +724,82 @@
     schedulePerspective();
   }
 
-  // Contact form -> Firestore
+  // Contact form -> Firestore & WhatsApp
   const form = document.getElementById("inquiry-form");
   const status = document.getElementById("form-status");
-  if (isFirebaseConfigured) {
-    form.hidden = false;
-    document.getElementById("inquiry-unavailable").hidden = true;
-  }
- form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  if (!isFirebaseConfigured || !form.reportValidity()) return;
-  const submit = document.getElementById("inquiry-submit");
-  submit.disabled = true;
-  submit.textContent = "Sending enquiry...";
-  status.className = "";
-  status.textContent = "Sending your enquiry...";
 
-  // Grab form inputs
-  const nameVal = document.getElementById("name").value.trim();
-  const phoneVal = document.getElementById("phone").value.trim();
-  const emailVal = document.getElementById("email").value.trim();
-  const unitVal = document.getElementById("unitType").value;
-  const messageVal = document.getElementById("message").value.trim();
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); // Prevents browser from doing default URL GET submission
 
-  try {
-    // 1. Save Lead to Firestore Database
-    await addDoc(collection(db, "inquiries"), {
-      name: nameVal,
-      phone: phoneVal,
-      email: emailVal,
-      unitTypology: unitVal,
-      message: messageVal,
-      createdAt: serverTimestamp(),
+      // Fallback check if isFirebaseConfigured is defined globally
+      const isConfigured = typeof isFirebaseConfigured !== "undefined" ? isFirebaseConfigured : true;
+      if (!isConfigured || (form.reportValidity && !form.reportValidity())) return;
+
+      const submit = document.getElementById("inquiry-submit");
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = "Sending enquiry...";
+      }
+      if (status) {
+        status.className = "";
+        status.textContent = "Sending your enquiry...";
+      }
+
+      // Safely extract input values
+      const nameVal = document.getElementById("name")?.value.trim() || "";
+      const phoneVal = document.getElementById("phone")?.value.trim() || "";
+      const emailVal = document.getElementById("email")?.value.trim() || "";
+      const unitVal = document.getElementById("unitType")?.value || "Studio Apartment";
+      const messageVal = document.getElementById("message")?.value.trim() || "";
+
+      try {
+        // 1. Save Lead to Firestore Database
+        if (typeof addDoc !== "undefined" && typeof collection !== "undefined" && typeof db !== "undefined") {
+          await addDoc(collection(db, "inquiries"), {
+            name: nameVal,
+            phone: phoneVal,
+            email: emailVal,
+            unitTypology: unitVal,
+            message: messageVal,
+            createdAt: typeof serverTimestamp !== "undefined" ? serverTimestamp() : new Date(),
+          });
+        }
+
+        // 2. Prepare WhatsApp Redirect
+        const targetWhatsApp = "254708222666"; // NACHU / Mvuli Place contact number
+        const waText = `Hello Mvuli Place Team,\n\nI would like to inquire about an apartment:\n` +
+                       `• Name: ${nameVal}\n` +
+                       `• Phone: ${phoneVal}\n` +
+                       `• Email: ${emailVal || 'N/A'}\n` +
+                       `• Unit: ${unitVal}\n` +
+                       `• Message: ${messageVal || 'No extra message'}`;
+
+        const waUrl = `https://wa.me/${targetWhatsApp}?text=${encodeURIComponent(waText)}`;
+
+        if (status) {
+          status.className = "form-status-success";
+          status.textContent = "Thank you! Opening WhatsApp...";
+        }
+        form.reset();
+
+        // 3. Launch WhatsApp in a new tab
+        window.open(waUrl, "_blank");
+
+      } catch (err) {
+        console.error("Error submitting form:", err);
+        if (status) {
+          status.className = "form-status-error";
+          status.textContent = "Failed to send inquiry. Please try again.";
+        }
+      } finally {
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = "Send Enquiry via WhatsApp";
+        }
+      }
     });
-
-    // 2. Prepare WhatsApp Redirect
-    const targetWhatsApp = "254708222666"; // NACHU / Mvuli Place contact number
-    const waText = `Hello Mvuli Place Team,\n\nI would like to inquire about an apartment:\n` +
-                   `• Name: ${nameVal}\n` +
-                   `• Phone: ${phoneVal}\n` +
-                   `• Email: ${emailVal || 'N/A'}\n` +
-                   `• Unit: ${unitVal}\n` +
-                   `• Message: ${messageVal || 'No extra message'}`;
-
-    const waUrl = `https://wa.me/${targetWhatsApp}?text=${encodeURIComponent(waText)}`;
-
-    status.className = "form-status-success";
-    status.textContent = "Thank you! Opening WhatsApp...";
-    form.reset();
-
-    // 3. Launch WhatsApp in new tab
-    window.open(waUrl, "_blank");
-
-  } catch (err) {
-    console.error("Error submitting form:", err);
-    status.className = "form-status-error";
-    status.textContent = "Failed to send inquiry. Please try again.";
-  } finally {
-    submit.disabled = false;
-    submit.textContent = "Send Enquiry via WhatsApp";
   }
-});
 </script>
 
 <script>
