@@ -761,12 +761,12 @@
     // 2. Prepare WhatsApp Redirect
     const targetWhatsApp = "254708222666"; // NACHU / Mvuli Place contact number
     const waText = `Hello Mvuli Place Team,\n\nI would like to inquire about an apartment:\n` +
-                   `• Name: ${nameVal}\n` +
-                   `• Phone: ${phoneVal}\n` +
-                   `• Email: ${emailVal || 'N/A'}\n` +
-                   `• Unit: ${unitVal}\n` +
-                   `• Message: ${messageVal || 'No extra message'}`;
-
+               `• Name: ${nameVal}\n` +
+               `• Phone: ${phoneVal}\n` +
+               `• Email: ${emailVal || 'N/A'}\n` +
+               `• Unit: ${unitVal}\n` +
+               `• Message: ${messageVal || 'No extra message'}`;
+               
     const waUrl = `https://wa.me/${targetWhatsApp}?text=${encodeURIComponent(waText)}`;
 
     status.className = "form-status-success";
