@@ -704,17 +704,7 @@
     const updatePerspective = () => {
       scrollFrame = 0;
       const bounds = stage.getBoundingClientRect();
-      if (bounds.bottom >= 0 && bounds.top <= window.innerHeight) {
-        const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
-        stage.style.setProperty("--scene-rotate", `${(-12 + progress * 21).toFixed(1)}deg`);
-        stage.style.setProperty("--scene-lift", `${(20 - progress * 40).toFixed(1)}px`);
-      }
-      const renderBounds = renderStory.getBoundingClientRect();
-      if (renderBounds.bottom >= 0 && renderBounds.top <= window.innerHeight) {
-        const progress = Math.max(0, Math.min(1, (window.innerHeight - renderBounds.top) / (window.innerHeight + renderBounds.height)));
-        const amplitude = window.innerWidth <= 680 ? 10 : 22;
-        renderStory.style.setProperty("--render-drift", `${(-amplitude + progress * amplitude * 2).toFixed(1)}px`);
-      }
+ if (bounds.bottom >= 0 && bounds.top <= window.innerHeight) {
     };
     const schedulePerspective = () => {
       if (!scrollFrame) scrollFrame = requestAnimationFrame(updatePerspective);
@@ -761,12 +751,12 @@
     // 2. Prepare WhatsApp Redirect
     const targetWhatsApp = "254708222666"; // NACHU / Mvuli Place contact number
     const waText = `Hello Mvuli Place Team,\n\nI would like to inquire about an apartment:\n` +
-               `• Name: ${nameVal}\n` +
-               `• Phone: ${phoneVal}\n` +
-               `• Email: ${emailVal || 'N/A'}\n` +
-               `• Unit: ${unitVal}\n` +
-               `• Message: ${messageVal || 'No extra message'}`;
-               
+                   `• Name: ${nameVal}\n` +
+                   `• Phone: ${phoneVal}\n` +
+                   `• Email: ${emailVal || 'N/A'}\n` +
+                   `• Unit: ${unitVal}\n` +
+                   `• Message: ${messageVal || 'No extra message'}`;
+
     const waUrl = `https://wa.me/${targetWhatsApp}?text=${encodeURIComponent(waText)}`;
 
     status.className = "form-status-success";
