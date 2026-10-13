@@ -731,35 +731,60 @@
     form.hidden = false;
     document.getElementById("inquiry-unavailable").hidden = true;
   }
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!isFirebaseConfigured || !form.reportValidity()) return;
-    const submit = document.getElementById("inquiry-submit");
-    submit.disabled = true;
-    submit.textContent = "Sending enquiry…";
-    status.className = "";
-    status.textContent = "Sending your enquiry…";
-    try {
-      await addDoc(collection(db, "inquiries"), {
-        name: document.getElementById("name").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        unitTypology: document.getElementById("unitType").value,
-        message: document.getElementById("message").value.trim(),
-        createdAt: serverTimestamp(),
-      });
-      status.className = "form-status-success";
-      status.textContent = "Thank you. Your enquiry has been sent. The team can follow up using the details you provided.";
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      status.className = "form-status-error";
-      status.textContent = "Your enquiry could not be sent. Please call 0708 222 666 or email nachu@nachu.or.ke.";
-    } finally {
-      submit.disabled = false;
-      submit.textContent = "Send enquiry";
-    }
- });
+ form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!isFirebaseConfigured || !form.reportValidity()) return;
+  const submit = document.getElementById("inquiry-submit");
+  submit.disabled = true;
+  submit.textContent = "Sending enquiry...";
+  status.className = "";
+  status.textContent = "Sending your enquiry...";
+
+  // Grab form inputs
+  const nameVal = document.getElementById("name").value.trim();
+  const phoneVal = document.getElementById("phone").value.trim();
+  const emailVal = document.getElementById("email").value.trim();
+  const unitVal = document.getElementById("unitType").value;
+  const messageVal = document.getElementById("message").value.trim();
+
+  try {
+    // 1. Save Lead to Firestore Database
+    await addDoc(collection(db, "inquiries"), {
+      name: nameVal,
+      phone: phoneVal,
+      email: emailVal,
+      unitTypology: unitVal,
+      message: messageVal,
+      createdAt: serverTimestamp(),
+    });
+
+    // 2. Prepare WhatsApp Redirect
+    const targetWhatsApp = "254708222666"; // NACHU / Mvuli Place contact number
+    const waText = `Hello Mvuli Place Team,\n\nI would like to inquire about an apartment:\n` +
+                   `• Name: ${nameVal}\n` +
+                   `• Phone: ${phoneVal}\n` +
+                   `• Email: ${emailVal || 'N/A'}\n` +
+                   `• Unit: ${unitVal}\n` +
+                   `• Message: ${messageVal || 'No extra message'}`;
+
+    const waUrl = `https://wa.me/${targetWhatsApp}?text=${encodeURIComponent(waText)}`;
+
+    status.className = "form-status-success";
+    status.textContent = "Thank you! Opening WhatsApp...";
+    form.reset();
+
+    // 3. Launch WhatsApp in new tab
+    window.open(waUrl, "_blank");
+
+  } catch (err) {
+    console.error("Error submitting form:", err);
+    status.className = "form-status-error";
+    status.textContent = "Failed to send inquiry. Please try again.";
+  } finally {
+    submit.disabled = false;
+    submit.textContent = "Send Enquiry via WhatsApp";
+  }
+});
 </script>
 
 <script>
