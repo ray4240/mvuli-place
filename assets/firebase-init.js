@@ -37,6 +37,11 @@ import {
   serverTimestamp,
   writeBatch,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAnalytics,
+  isSupported as analyticsSupported,
+  logEvent,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
 // TODO: replace with your Mvuli Place Firebase project config
 const firebaseConfig = {
@@ -46,6 +51,7 @@ const firebaseConfig = {
   storageBucket: "mvuli-place.appspot.com",
   messagingSenderId: "YOUR_SENDER_ID",
   appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID", // only needed for Analytics (starts with G-)
 };
 
 export const isFirebaseConfigured = [
@@ -58,6 +64,20 @@ export const isFirebaseConfigured = [
 const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
 export const db = app ? getFirestore(app) : null;
 export const auth = app ? getAuth(app) : null;
+
+// Firebase Analytics (page views + the "generate_lead" event from the enquiry form).
+// Stays off until a real measurementId is set, and never breaks the page if blocked.
+let analytics = null;
+const analyticsReady =
+  app && firebaseConfig.measurementId && !firebaseConfig.measurementId.startsWith("YOUR_");
+if (analyticsReady) {
+  analyticsSupported()
+    .then(ok => { if (ok) analytics = getAnalytics(app); })
+    .catch(() => {});
+}
+export function track(eventName, params = {}) {
+  try { if (analytics) logEvent(analytics, eventName, params); } catch (_) { /* ignore */ }
+}
 
 export {
   collection,

@@ -1584,3 +1584,29 @@ table.admin-table select { min-width: 118px; min-height: 35px; padding: 6px 8px;
   text-align: center;
   padding: 20px;
 }
+#inquiry-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#inquiry-submit:hover {
+  background-color: #20ba5a !important;
+  cursor: pointer;
+  transform: translateY(-1px);
+}
+/* Responsive Investment Layout */
+.invest-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .invest-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
