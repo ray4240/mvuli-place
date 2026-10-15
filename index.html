@@ -310,38 +310,18 @@
 
     <div class="two-col invest-layout">
       <div>
-        <div class="table-container" style="background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-          <h3 style="margin-bottom: 16px; font-size: 18px; color: var(--maroon);">Projected Rental Yields</h3>
-          <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; min-width: 280px;">
-              <thead>
-                <tr style="border-bottom: 2px solid var(--line); color: var(--maroon);">
-                  <th style="padding: 10px;">Typology</th>
-                  <th style="padding: 10px;">Starting Price</th>
-                  <th style="padding: 10px;">Est. Monthly Rent</th>
-                  <th style="padding: 10px;">Gross Yield</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom: 1px solid var(--line);">
-                  <td style="padding: 10px; font-weight: 600;">Studio Apartment</td>
-                  <td style="padding: 10px;">Ksh 2.0M</td>
-                  <td style="padding: 10px;">Ksh 20K - 25K</td>
-                  <td style="padding: 10px; color: var(--gold); font-weight: 600;">12.0% p.a.</td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px; font-weight: 600;">1-Bedroom</td>
-                  <td style="padding: 10px;">Ksh 3.5M</td>
-                  <td style="padding: 10px;">Ksh 35K - 40K</td>
-                  <td style="padding: 10px; color: var(--gold); font-weight: 600;">12.3% p.a.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="invest-fineprint" style="margin-top: 16px; font-size: 12px; color: #666;">Gross yield is estimated monthly rent &times; 12 &divide; indicative starting price. Excludes vacancy, service charges, taxes, and transaction costs.</p>
-        </div>
+        <!-- Dynamic Tabs populated by keys.forEach in JS -->
+        <div class="unit-tabs" id="invest-tabs" role="group" aria-label="Choose a layout for the rent illustration"></div>
+
+        <!-- Dynamic Stats populated by showInvest(key) in JS -->
+        <div class="invest-stat-grid" id="invest-stats" aria-live="polite"></div>
+
+        <p class="invest-fineprint" style="margin-top: 16px; font-size: 12px; color: #666;">
+          Gross yield is estimated monthly rent &times; 12 &divide; indicative starting price. Excludes vacancy, service charges, repairs, taxes, financing and transaction costs.
+        </p>
       </div>
 
+      <!-- Before You Buy Card -->
       <div class="invest-explainer" data-reveal style="background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
         <span class="invest-explainer-number" style="font-size: 11px; letter-spacing: 1.5px; font-weight: 700; color: var(--gold); text-transform: uppercase;">BEFORE YOU BUY</span>
         <h3 style="margin-top: 8px; margin-bottom: 12px; font-size: 20px;">Transparent Investment Guidance</h3>
@@ -431,7 +411,31 @@
       </div>
     </div>
 
-    <div class="contact-card" style="background: rgba(40, 20, 20, 0.85); padding: 32px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+    <div class="contact-card" style="position: relative; background: rgba(40, 20, 20, 0.85); padding: 32px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden;">
+      
+      <!-- Auth Gate Overlay (Shown when logged out) -->
+      <div id="contact-auth-overlay" style="position: absolute; inset: 0; background: rgba(20, 10, 10, 0.92); backdrop-filter: blur(4px); z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px;">
+        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h3 style="color: #fff; margin-bottom: 8px; font-size: 20px;">Sign in to Send an Inquiry</h3>
+        <p style="color: #ccc; font-size: 14px; max-width: 280px; margin-bottom: 20px;">
+          Please sign in with your Google account to check real-time availability and contact our sales team.
+        </p>
+        <button id="contact-login-btn" class="btn" type="button" style="background: #fff; color: #111; font-weight: 600; padding: 12px 24px; border-radius: 6px; gap: 8px; border: none; cursor: pointer; display: inline-flex; align-items: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          Sign in with Google
+        </button>
+      </div>
+
       <p style="font-size: 14px; color: #ccc; margin-bottom: 20px;">Tell us what you would like to know. Fields marked required must be completed.</p>
       
       <form id="inquiry-form">
@@ -465,16 +469,12 @@
 
         <div id="form-status" style="margin-bottom: 12px; font-weight: 600; font-size: 14px;"></div>
 
-        <button 
-  type="submit" 
-  id="inquiry-submit" 
-  class="btn" 
-  style="width: 100%; justify-content: center; background-color: #25D366; color: #ffffff; border: none; font-weight: 700; gap: 8px;">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-  </svg>
-  Send Enquiry via WhatsApp
-</button>
+        <button type="submit" id="inquiry-submit" class="btn" style="width: 100%; justify-content: center; background-color: #25D366; color: #ffffff; border: none; font-weight: 700; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          Send Enquiry via WhatsApp
+        </button>
       </form>
     </div>
   </div>
@@ -839,6 +839,37 @@
         setStatus("form-status-success", "Thank you! Your message is ready in WhatsApp.");
       } finally {
         if (submit) { submit.disabled = false; submit.textContent = "Send Enquiry via WhatsApp"; }
+      }
+    });
+  }
+  // Auth Gate & Auto-fill Handler for Contact Form
+  const contactOverlay = document.getElementById("contact-auth-overlay");
+  const contactLoginBtn = document.getElementById("contact-login-btn");
+
+  if (contactLoginBtn) {
+    contactLoginBtn.addEventListener("click", () => {
+      const topSigninBtn = document.getElementById("google-signin-btn") || document.querySelector("[data-auth-login]");
+      if (topSigninBtn) {
+        topSigninBtn.click();
+      } else if (typeof signInWithGoogle === "function") {
+        signInWithGoogle();
+      }
+    });
+  }
+
+  if (typeof auth !== "undefined" && typeof onAuthStateChanged !== "undefined") {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in: Hide overlay & auto-fill profile details
+        if (contactOverlay) contactOverlay.style.display = "none";
+        
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        if (nameInput && user.displayName) nameInput.value = user.displayName;
+        if (emailInput && user.email) emailInput.value = user.email;
+      } else {
+        // User is logged out: Show lock overlay over form
+        if (contactOverlay) contactOverlay.style.display = "flex";
       }
     });
   }
