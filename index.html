@@ -42,7 +42,7 @@
       </button>
 
       <!-- Logged-in User Profile Container -->
-      <div id="user-profile" hidden style="display: flex; align-items: center; gap: 8px;">
+      <div id="user-profile" style="display: none; align-items: center; gap: 8px;">
         <img id="user-avatar" src="" alt="Profile" style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ddd; object-fit: cover;">
         <span id="user-name" style="font-weight: 600; font-size: 13px; color: #222;"></span>
         <button id="logout-btn" style="background: transparent; color: #d9534f; border: 1px solid #d9534f; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600;">Logout</button>
@@ -434,6 +434,7 @@
           </svg>
           Sign in with Google
         </button>
+        <p id="contact-auth-error" role="alert" hidden style="color: #ffb4a8; font-size: 13px; max-width: 300px; margin: 14px 0 0;"></p>
       </div>
 
       <p style="font-size: 14px; color: #ccc; margin-bottom: 20px;">Tell us what you would like to know. Fields marked required must be completed.</p>
@@ -529,7 +530,7 @@
 
 <script type="module">
   import { TYPOLOGIES } from "./assets/unit-data.js";
-  import { db, isFirebaseConfigured, collection, addDoc, serverTimestamp, track } from "./assets/firebase-init.js";
+  import { db, auth, isFirebaseConfigured, collection, addDoc, serverTimestamp, track, signInWithGoogle, onAuthStateChanged, signOut } from "./assets/firebase-init.js";
 
   const unitImages = {
     Studio: "assets/render-studio-plan.jpeg",
@@ -842,36 +843,69 @@
       }
     });
   }
-  // Auth Gate & Auto-fill Handler for Contact Form
+  // Google sign-in: the nav button and the contact-form gate share one handler
   const contactOverlay = document.getElementById("contact-auth-overlay");
+  const navLoginBtn = document.getElementById("google-login-btn");
   const contactLoginBtn = document.getElementById("contact-login-btn");
+  const logoutBtn = document.getElementById("logout-btn");
+  const userProfile = document.getElementById("user-profile");
+  const authError = document.getElementById("contact-auth-error");
 
-  if (contactLoginBtn) {
-    contactLoginBtn.addEventListener("click", () => {
-      const topSigninBtn = document.getElementById("google-signin-btn") || document.querySelector("[data-auth-login]");
-      if (topSigninBtn) {
-        topSigninBtn.click();
-      } else if (typeof signInWithGoogle === "function") {
-        signInWithGoogle();
+  const showAuthError = (message) => {
+    if (!authError) return;
+    authError.textContent = message;
+    authError.hidden = !message;
+  };
+  const authMessages = {
+    "auth/unauthorized-domain": "This web address isn't approved for Google sign-in yet.",
+    "auth/operation-not-allowed": "Google sign-in isn't switched on for this site yet.",
+    "auth/popup-closed-by-user": "Sign-in was closed before it finished. Please try again.",
+    "auth/network-request-failed": "Network problem. Check your connection and try again.",
+    "app/not-configured": "Sign-in isn't available right now.",
+  };
+
+  [navLoginBtn, contactLoginBtn].filter(Boolean).forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      showAuthError("");
+      btn.disabled = true;
+      try {
+        const result = await signInWithGoogle();
+        if (result) track("login", { method: "google" });
+      } catch (err) {
+        console.error("Google sign-in failed:", err.code, err);
+        const reason = authMessages[err.code] || "We couldn't sign you in with Google.";
+        showAuthError(`${reason} (${err.code || "unknown"}). You can also WhatsApp us on 0708 222 666.`);
+      } finally {
+        btn.disabled = false;
       }
     });
-  }
+  });
 
-  if (typeof auth !== "undefined" && typeof onAuthStateChanged !== "undefined") {
+  if (logoutBtn && auth) logoutBtn.addEventListener("click", () => signOut(auth));
+
+  if (auth) {
     onAuthStateChanged(auth, (user) => {
+      if (navLoginBtn) navLoginBtn.style.display = user ? "none" : "inline-flex";
+      if (userProfile) {
+        userProfile.style.display = user ? "flex" : "none";
+        if (user) {
+          document.getElementById("user-avatar").src = user.photoURL || "assets/mvuli-logo.png";
+          document.getElementById("user-name").textContent = user.displayName ? user.displayName.split(" ")[0] : "User";
+        }
+      }
+      // Signed in: open the form and fill in name + email. Signed out: lock it.
+      if (contactOverlay) contactOverlay.style.display = user ? "none" : "flex";
       if (user) {
-        // User is logged in: Hide overlay & auto-fill profile details
-        if (contactOverlay) contactOverlay.style.display = "none";
-        
+        showAuthError("");
         const nameInput = document.getElementById("name");
         const emailInput = document.getElementById("email");
-        if (nameInput && user.displayName) nameInput.value = user.displayName;
-        if (emailInput && user.email) emailInput.value = user.email;
-      } else {
-        // User is logged out: Show lock overlay over form
-        if (contactOverlay) contactOverlay.style.display = "flex";
+        if (nameInput && user.displayName && !nameInput.value) nameInput.value = user.displayName;
+        if (emailInput && user.email && !emailInput.value) emailInput.value = user.email;
       }
     });
+  } else if (contactOverlay) {
+    // Firebase unavailable: don't lock visitors out, WhatsApp still works.
+    contactOverlay.style.display = "none";
   }
 </script>
 
@@ -919,59 +953,6 @@
     <button type="submit" style="background: #d4af37; color: #000; font-weight: bold; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Send</button>
   </form>
 </div>
-<script type="module">
-  // 1. Imports at the top
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-  // 2. Firebase Configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDJ-OOvLHZrniYmn8T7j_YsqdRVNtTBh1c",
-    authDomain: "mvuli-place.firebaseapp.com",
-    projectId: "mvuli-place",
-    storageBucket: "mvuli-place.firebasestorage.app",
-    messagingSenderId: "754736646011",
-    appId: "1:754736646011:web:ba81b5b0412c6675d51fde",
-    measurementId: "G-TF77VEPRSG"
-  };
-
-  // 3. Initialize Firebase & Auth
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
-  // 4. Get UI Elements
-  const loginBtn = document.getElementById('google-login-btn');
-  const logoutBtn = document.getElementById('logout-btn');
-  const userProfile = document.getElementById('user-profile');
-
-  // 5. Auth Event Listeners
-  if (loginBtn) {
-    loginBtn.addEventListener('click', () => {
-      signInWithPopup(auth, provider).catch(error => console.error("Auth Error:", error));
-    });
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => signOut(auth));
-  }
-
-  // 6. Monitor Auth State
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      if (loginBtn) loginBtn.style.display = 'none';
-      if (userProfile) {
-        userProfile.hidden = false;
-        document.getElementById('user-avatar').src = user.photoURL || 'assets/mvuli-logo.png';
-        document.getElementById('user-name').textContent = user.displayName ? user.displayName.split(' ')[0] : 'User';
-      }
-    } else {
-      if (loginBtn) loginBtn.style.display = 'flex';
-      if (userProfile) userProfile.hidden = true;
-    }
-  });
-</script>
-
 <script>
   // AI FAQ Chat Logic
   (function() {

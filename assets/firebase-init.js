@@ -22,6 +22,10 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore,
@@ -43,15 +47,16 @@ import {
   logEvent,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
-// TODO: replace with your Mvuli Place Firebase project config
+// Mvuli Place Firebase project config (web config values are identifiers, not secrets;
+// access is protected by firestore.rules and the Authorized domains list in the console).
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyDJ-OOvLHZrniYmn8T7j_YsqdRVNtTBh1c",
   authDomain: "mvuli-place.firebaseapp.com",
   projectId: "mvuli-place",
-  storageBucket: "mvuli-place.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID", // only needed for Analytics (starts with G-)
+  storageBucket: "mvuli-place.firebasestorage.app",
+  messagingSenderId: "754736646011",
+  appId: "1:754736646011:web:ba81b5b0412c6675d51fde",
+  measurementId: "G-TF77VEPRSG", // Analytics
 };
 
 export const isFirebaseConfigured = [
@@ -64,6 +69,34 @@ export const isFirebaseConfigured = [
 const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
 export const db = app ? getFirestore(app) : null;
 export const auth = app ? getAuth(app) : null;
+
+// Google sign-in for visitors. Tries the pop-up first; if the browser blocks it
+// (common on phones), falls back to a full-page redirect to Google.
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
+
+export async function signInWithGoogle() {
+  if (!auth) throw Object.assign(new Error("Firebase is not configured"), { code: "app/not-configured" });
+  try {
+    return await signInWithPopup(auth, googleProvider);
+  } catch (err) {
+    const useRedirect = [
+      "auth/popup-blocked",
+      "auth/cancelled-popup-request",
+      "auth/operation-not-supported-in-this-environment",
+    ];
+    if (useRedirect.includes(err.code)) {
+      await signInWithRedirect(auth, googleProvider);
+      return null; // page navigates to Google, then returns here signed in
+    }
+    throw err;
+  }
+}
+
+// Surface any error from a redirect-style sign-in once the page reloads.
+if (auth) {
+  getRedirectResult(auth).catch(err => console.error("Google redirect sign-in failed:", err.code, err));
+}
 
 // Firebase Analytics (page views + the "generate_lead" event from the enquiry form).
 // Stays off until a real measurementId is set, and never breaks the page if blocked.
