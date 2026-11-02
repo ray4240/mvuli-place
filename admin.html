@@ -54,7 +54,7 @@
         <div>
           <div class="eyebrow">Property operations</div>
           <h1>Mvuli Place dashboard</h1>
-          <p>Review enquiries and keep unit statuses current.</p>
+          <p>Review enquiries, keep unit statuses current and publish construction updates.</p>
         </div>
         <div class="admin-user-card">
           <span class="admin-user-dot" aria-hidden="true"></span>
@@ -72,6 +72,7 @@
         <div class="tabbar admin-tabbar" aria-label="Workspace views">
           <button type="button" class="active" data-tab="inquiries" aria-pressed="true">Enquiries</button>
           <button type="button" data-tab="units" aria-pressed="false">Units</button>
+          <button type="button" data-tab="progress" aria-pressed="false">Progress</button>
         </div>
 
         <section id="tab-inquiries" class="admin-view" aria-labelledby="inquiries-title">
@@ -113,6 +114,35 @@
             <div><strong>First-time register setup</strong><p>The 120 unit numbers are an assumed layout from the project brief. Confirm the official register before creating missing records. Existing records will be preserved.</p></div>
             <button type="button" id="seed-btn" class="btn btn-maroon" disabled>Create missing units</button>
           </div>
+        </section>
+        <section id="tab-progress" class="admin-view" aria-labelledby="progress-admin-title" hidden>
+          <div class="admin-view-head">
+            <div><h2 id="progress-admin-title">Construction progress</h2><p>Publish the update that clients see in the Progress section of the public site.</p></div>
+            <button type="button" class="admin-refresh" id="refresh-progress">Reload saved update</button>
+          </div>
+          <form id="progress-form" novalidate>
+            <div class="admin-form-grid">
+              <div><label for="progress-percent">Overall completion (%)</label><input id="progress-percent" type="number" min="0" max="100" step="1" inputmode="numeric" required></div>
+              <div><label for="progress-eta">Estimated completion</label><input id="progress-eta" type="text" maxlength="60" placeholder="e.g. December 2026"></div>
+              <div class="is-wide"><label for="progress-summary">Update summary: what has happened since the last update</label><textarea id="progress-summary" rows="3" maxlength="600"></textarea></div>
+            </div>
+
+            <div class="admin-rows-head">Stages</div>
+            <p class="admin-help">Set each stage to Completed, In progress or Upcoming. Completed stages always show 100% and upcoming stages show no percentage.</p>
+            <div id="milestone-rows" class="admin-rows"></div>
+            <button type="button" class="admin-refresh" id="add-milestone">Add a stage</button>
+
+            <div class="admin-rows-head" style="margin-top: 24px;">Site photos</div>
+            <p class="admin-help">Add each photo file to the <code>assets/progress/</code> folder in the repository, then enter its path here, for example <code>assets/progress/week-12-frame.jpg</code>. A full https:// image address also works. Only publish photos the project team has approved.</p>
+            <div id="photo-rows" class="admin-rows"></div>
+            <button type="button" class="admin-refresh" id="add-photo">Add a photo</button>
+
+            <div class="admin-actions">
+              <button type="submit" class="btn btn-maroon" id="progress-save">Publish update</button>
+              <button type="button" class="admin-refresh" id="export-progress">Download history (CSV for Power BI or Excel)</button>
+            </div>
+          </form>
+          <p id="progress-history-summary" class="admin-summary"></p>
         </section>
         <p id="admin-message" class="admin-inline-message" role="status" aria-live="polite"></p>
       </div>

@@ -1,3 +1,14 @@
+document.querySelectorAll(".admin-tabbar button").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".admin-tabbar button").forEach(tab => {
+      const selected = tab === button;
+      document.getElementById(`tab-${tab.dataset.tab}`).hidden = !selected;
+      tab.classList.toggle("active", selected);
+      tab.setAttribute("aria-pressed", String(selected));
+    });
+  });
+});
+
 import { generateUnitList, TYPOLOGIES } from "./unit-data.js";
 import {
   auth, db, isFirebaseConfigured, collection, doc, getDoc, getDocs,
@@ -227,6 +238,201 @@ document.querySelectorAll(".admin-tabbar button").forEach(button => {
   });
 });
 
+
+// ---------- Construction progress ----------
+const DEFAULT_STAGES = [
+  "Site preparation and excavation",
+  "Foundation and ground works",
+  "Structural frame",
+  "Walls, roof and windows",
+  "Electrical, plumbing and fire systems",
+  "Lifts and backup generator",
+  "Interior finishes",
+  "External works and landscaping",
+  "Final checks and handover",
+];
+const STAGE_STATUSES = [["completed", "Completed"], ["in_progress", "In progress"], ["upcoming", "Upcoming"]];
+let progressHistory = [];
+
+const milestoneRows = document.getElementById("milestone-rows");
+const photoRows = document.getElementById("photo-rows");
+
+function makeInput(type, value, attrs = {}) {
+  const input = document.createElement("input");
+  input.type = type;
+  input.value = value ?? "";
+  Object.entries(attrs).forEach(([key, val]) => input.setAttribute(key, val));
+  return input;
+}
+
+function removeButton(row, label) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "admin-row-remove";
+  button.textContent = "Remove";
+  button.setAttribute("aria-label", label);
+  button.addEventListener("click", () => row.remove());
+  return button;
+}
+
+function addMilestoneRow(stage = {}) {
+  const row = document.createElement("div");
+  row.className = "admin-row row-milestone";
+  const title = makeInput("text", stage.title, { maxlength: 80, placeholder: "Stage name", "aria-label": "Stage name", "data-field": "title" });
+  const status = document.createElement("select");
+  status.setAttribute("aria-label", "Stage status");
+  status.dataset.field = "status";
+  STAGE_STATUSES.forEach(([value, label]) => status.append(new Option(label, value)));
+  status.value = STAGE_STATUSES.some(([value]) => value === stage.status) ? stage.status : "upcoming";
+  const percent = makeInput("number", stage.percent ?? 0, { min: 0, max: 100, step: 1, inputmode: "numeric", "aria-label": "Stage percentage", "data-field": "percent" });
+  const note = makeInput("text", stage.note, { maxlength: 120, placeholder: "Short note (optional)", "aria-label": "Stage note", "data-field": "note" });
+  row.append(title, status, percent, note, removeButton(row, "Remove this stage"));
+  milestoneRows.append(row);
+}
+
+function addPhotoRow(photo = {}) {
+  const row = document.createElement("div");
+  row.className = "admin-row row-photo";
+  const src = makeInput("text", photo.src, { maxlength: 300, placeholder: "assets/progress/photo-name.jpg", "aria-label": "Photo path or address", "data-field": "src" });
+  const caption = makeInput("text", photo.caption, { maxlength: 120, placeholder: "Caption", "aria-label": "Photo caption", "data-field": "caption" });
+  const date = makeInput("date", photo.date, { "aria-label": "Photo date", "data-field": "date" });
+  row.append(src, caption, date, removeButton(row, "Remove this photo"));
+  photoRows.append(row);
+}
+
+function fillProgressForm(data) {
+  document.getElementById("progress-percent").value = data?.overallPercent ?? "";
+  document.getElementById("progress-eta").value = data?.estimatedCompletion ?? "";
+  document.getElementById("progress-summary").value = data?.summary ?? "";
+  milestoneRows.replaceChildren();
+  photoRows.replaceChildren();
+  const stages = Array.isArray(data?.milestones) && data.milestones.length
+    ? data.milestones
+    : DEFAULT_STAGES.map(title => ({ title, status: "upcoming", percent: 0 }));
+  stages.forEach(addMilestoneRow);
+  (Array.isArray(data?.photos) ? data.photos : []).forEach(addPhotoRow);
+}
+
+async function loadProgress() {
+  const summary = document.getElementById("progress-history-summary");
+  try {
+    const [current, history] = await Promise.all([
+      getDoc(doc(db, "progress", "current")),
+      getDocs(query(collection(db, "progressHistory"), orderBy("date"))),
+    ]);
+    fillProgressForm(current.exists() ? current.data() : null);
+    progressHistory = history.docs.map(record => record.data());
+    const last = progressHistory[progressHistory.length - 1];
+    summary.textContent = progressHistory.length
+      ? `${progressHistory.length} update${progressHistory.length === 1 ? "" : "s"} published · latest ${last.date} at ${last.percent}%`
+      : current.exists() ? "" : "Nothing has been published yet. The public site shows a placeholder until you publish the first update.";
+  } catch (error) {
+    console.error(error);
+    fillProgressForm(null);
+    showMessage(adminMessage, "The saved progress update could not be loaded. Check staff access and Firestore rules.", true);
+  }
+}
+
+function readProgressForm() {
+  const percentField = document.getElementById("progress-percent");
+  const overall = Number(percentField.value);
+  if (percentField.value === "" || !Number.isFinite(overall) || overall < 0 || overall > 100) {
+    throw new Error("Enter an overall completion between 0 and 100.");
+  }
+  const milestones = [...milestoneRows.querySelectorAll(".admin-row")].map(row => {
+    const field = name => row.querySelector(`[data-field="${name}"]`).value.trim();
+    const title = field("title");
+    if (!title) throw new Error("Every stage needs a name. Fill it in or remove the row.");
+    const status = field("status");
+    let percent = Math.max(0, Math.min(100, Math.round(Number(field("percent")) || 0)));
+    if (status === "completed") percent = 100;
+    if (status === "upcoming") percent = 0;
+    return { title, status, percent, note: field("note") };
+  });
+  if (milestones.length > 20) throw new Error("Use 20 stages or fewer.");
+
+  const photos = [...photoRows.querySelectorAll(".admin-row")].map(row => {
+    const field = name => row.querySelector(`[data-field="${name}"]`).value.trim();
+    return { src: field("src"), caption: field("caption"), date: field("date") };
+  }).filter(photo => photo.src);
+  photos.forEach(photo => {
+    if (!/^(assets\/[\w\-./]+|https:\/\/\S+)$/.test(photo.src)) {
+      throw new Error(`"${photo.src}" is not a valid photo path. Use assets/progress/name.jpg or an https:// address.`);
+    }
+  });
+  if (photos.length > 30) throw new Error("Use 30 photos or fewer. Remove older ones first.");
+
+  return {
+    overallPercent: Math.round(overall),
+    summary: document.getElementById("progress-summary").value.trim(),
+    estimatedCompletion: document.getElementById("progress-eta").value.trim(),
+    milestones,
+    photos,
+  };
+}
+
+async function saveProgress(event) {
+  event.preventDefault();
+  const button = document.getElementById("progress-save");
+  let payload;
+  try {
+    payload = readProgressForm();
+  } catch (error) {
+    showMessage(adminMessage, error.message, true);
+    return;
+  }
+  if (!window.confirm(`Publish this update (${payload.overallPercent}% complete) to the public site now?`)) return;
+  button.disabled = true;
+  button.textContent = "Publishing…";
+  try {
+    const date = new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Nairobi" });
+    const batch = writeBatch(db);
+    batch.set(doc(db, "progress", "current"), { ...payload, updatedAt: serverTimestamp() });
+    batch.set(doc(db, "progressHistory", date), {
+      date,
+      percent: payload.overallPercent,
+      milestones: payload.milestones.map(({ title, status, percent }) => ({ title, status, percent })),
+      updatedAt: serverTimestamp(),
+    });
+    await batch.commit();
+    showMessage(adminMessage, "Progress update published. It is now live on the public site.");
+    await loadProgress();
+  } catch (error) {
+    console.error(error);
+    showMessage(adminMessage, "The update could not be published. Check staff access and that the latest Firestore rules are published.", true);
+  } finally {
+    button.disabled = false;
+    button.textContent = "Publish update";
+  }
+}
+
+function exportProgressHistory() {
+  if (!progressHistory.length) {
+    showMessage(adminMessage, "There is no history to download yet. Publish an update first.", true);
+    return;
+  }
+  const csvCell = value => `"${String(value ?? "").replace(/"/g, '""')}"`;
+  const lines = [["date", "overall_percent", "stage", "stage_status", "stage_percent"].map(csvCell).join(",")];
+  progressHistory.forEach(entry => {
+    const stages = Array.isArray(entry.milestones) && entry.milestones.length ? entry.milestones : [{}];
+    stages.forEach(stage => lines.push([entry.date, entry.percent, stage.title, stage.status, stage.percent].map(csvCell).join(",")));
+  });
+  const blob = new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "mvuli-place-progress-history.csv";
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+}
+
+document.getElementById("add-milestone").addEventListener("click", () => addMilestoneRow());
+document.getElementById("add-photo").addEventListener("click", () => addPhotoRow());
+document.getElementById("progress-form").addEventListener("submit", saveProgress);
+document.getElementById("refresh-progress").addEventListener("click", loadProgress);
+document.getElementById("export-progress").addEventListener("click", exportProgressHistory);
+
 document.getElementById("inquiry-search").addEventListener("input", renderInquiries);
 document.getElementById("unit-search").addEventListener("input", renderUnits);
 document.getElementById("unit-filter").addEventListener("change", renderUnits);
@@ -279,7 +485,7 @@ if (isFirebaseConfigured) {
       document.getElementById("staff-identity").textContent = user.email || "Staff member";
       showMessage(loginMessage, "");
       showScreen("admin");
-      await Promise.all([loadInquiries(), loadUnits()]);
+      await Promise.all([loadInquiries(), loadUnits(), loadProgress()]);
     } catch (error) {
       console.error(error);
       await signOut(auth);

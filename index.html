@@ -26,6 +26,7 @@
       <a href="#gallery">Gallery</a>
       <a href="#units">Floor Plans &amp; Pricing</a>
       <a href="#invest">Investment</a>
+      <a href="#progress">Progress</a>
       <a href="#location">Location</a>
       <a href="#contact">Contact</a>
     </div>
@@ -62,6 +63,7 @@
     <a href="#interiors">Interior concepts</a>
     <a href="#units">Floor Plans &amp; Pricing</a>
     <a href="#invest">Investment</a>
+    <a href="#progress">Construction progress</a>
     <a href="#location">Location</a>
     <a href="#contact">Contact &amp; visits</a>
     <a href="tel:0708222666" class="mobile-nav-phone">Call 0708 222 666</a>
@@ -334,23 +336,77 @@
   </div>
 </section>
 
+<section id="progress" class="progress-section">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="eyebrow">CONSTRUCTION PROGRESS</span>
+      <h2>Watch Mvuli Place rise.</h2>
+      <p>Real-time milestone tracking powered by NACHU project management.</p>
+    </div>
+
+    <!-- Overall Completion Meter -->
+    <div class="overall-progress-card">
+      <div class="progress-info">
+        <h3>Overall Project Completion</h3>
+        <span class="percentage-badge">35% Completed</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" style="width: 35%;"></div>
+      </div>
+      <p class="update-date">Last updated: October 2026</p>
+    </div>
+
+    <!-- Stage-by-Stage Breakdown (WBS View) -->
+    <div class="stages-grid">
+      <!-- Stage 1 -->
+      <div class="stage-card completed">
+        <div class="stage-status">Done</div>
+        <h4>1. Substructure & Foundations</h4>
+        <p>Excavation, piling, and ground slab casting completed.</p>
+        <div class="mini-bar"><div class="fill" style="width: 100%;"></div></div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="stage-card active">
+        <div class="stage-status">In Progress</div>
+        <h4>2. Superstructure Frame</h4>
+        <p>RC columns and slab casting for floors 1 to 4 ongoing.</p>
+        <div class="mini-bar"><div class="fill" style="width: 60%;"></div></div>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="stage-card upcoming">
+        <div class="stage-status">Upcoming</div>
+        <h4>3. Masonry & Finishes</h4>
+        <p>Wall partitioning, plasterwork, plumbing & electrical piping.</p>
+        <div class="mini-bar"><div class="fill" style="width: 0%;"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="location">
   <div class="wrap two-col">
     <a href="https://www.google.com/maps/search/?api=1&query=Placemakers+Riruta+Nairobi&query_place_id=ChIJ1fPod1obLxgR2C8YLszipkE" target="_blank" rel="noopener noreferrer" class="map-link-wrapper" aria-label="View Placemakers Riruta on Google Maps">
-  <img src="assets/location-map.jpg" alt="Map showing Mvuli Place in Riruta relative to nearby Nairobi landmarks">
-</a>
+      <img src="assets/location-map.jpg" alt="Map showing Mvuli Place in Riruta relative to nearby Nairobi landmarks" loading="lazy" decoding="async">
+    </a>
+    <div class="location-copy">
+      <div class="eyebrow">Location</div>
       <h2>Connected to the places you use every day.</h2>
       <div class="prose" style="margin: 18px 0 24px;">
-        <p>Mvuli Place is on Nyakinyua Road in Riruta, near Naivasha Road. Use the map as a guide, then confirm travel times and the exact site entrance when arranging a visit.</p>
+        <p>Mvuli Place is on Nyakinyua Road in Riruta, near Naivasha Road. Supermarkets, a health centre and schools are within about a kilometre, with The Junction Mall and the Talanta Sports City stadium a short drive away.</p>
       </div>
       <ul class="amenity-list">
-        <li>The Junction Mall</li>
-        <li>Greenhouse Mall</li>
-        <li>Moi Girls' School Nairobi</li>
-        <li>Riruta Satellite Primary School</li>
-        <li>Kenyatta National Hospital</li>
-        <li>Karen Hospital</li>
+        <li><span class="amenity-name">Skymart Supermarket, Satellite</span><span class="amenity-dist">0.2 km</span></li>
+        <li><span class="amenity-name">Riruta Health Centre</span><span class="amenity-dist">0.4 km</span></li>
+        <li><span class="amenity-name">One Square Shopping Complex</span><span class="amenity-dist">0.6 km</span></li>
+        <li><span class="amenity-name">Riruta Satellite Primary School</span><span class="amenity-dist">0.7 km</span></li>
+        <li><span class="amenity-name">Naivas Supermarket, Riruta</span><span class="amenity-dist">1.0 km</span></li>
+        <li><span class="amenity-name">Eutychus Academy, Riruta</span><span class="amenity-dist">1.0 km</span></li>
+        <li><span class="amenity-name">Talanta Sports City Stadium<em class="amenity-note">60,000 seats, under construction</em></span><span class="amenity-dist">1.9 km</span></li>
+        <li><span class="amenity-name">The Junction Mall</span><span class="amenity-dist">2.4 km</span></li>
       </ul>
+      <p class="amenity-footnote">Distances are approximate straight-line measurements from the site, based on Google Maps locations. Travel times vary with traffic, so please confirm routes when arranging a visit.</p>
     </div>
   </div>
 </section>
@@ -530,7 +586,7 @@
 
 <script type="module">
   import { TYPOLOGIES } from "./assets/unit-data.js";
-  import { db, auth, isFirebaseConfigured, collection, addDoc, serverTimestamp, track, signInWithGoogle, onAuthStateChanged, signOut } from "./assets/firebase-init.js";
+  import { db, auth, isFirebaseConfigured, collection, addDoc, doc, getDoc, getDocs, query, orderBy, serverTimestamp, track, signInWithGoogle, onAuthStateChanged, signOut } from "./assets/firebase-init.js";
 
   const unitImages = {
     Studio: "assets/render-studio-plan.jpeg",
@@ -907,6 +963,185 @@
     // Firebase unavailable: don't lock visitors out, WhatsApp still works.
     contactOverlay.style.display = "none";
   }
+
+  // Construction progress: reads progress/current and progressHistory from Firestore
+  (async function initProgress() {
+    const root = document.getElementById("progress-root");
+    if (!root) return;
+
+    const el = (tag, className, textContent) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (textContent != null) node.textContent = textContent;
+      return node;
+    };
+    const pct = (value) => Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+    const fmtDate = (value) => {
+      const d = value && typeof value.toDate === "function" ? value.toDate() : (value ? new Date(value) : null);
+      return d && !Number.isNaN(d.getTime())
+        ? new Intl.DateTimeFormat("en-KE", { day: "numeric", month: "short", year: "numeric" }).format(d)
+        : "";
+    };
+    const safeSrc = (src) => typeof src === "string" && /^(assets\/[\w\-./]+|https:\/\/[^\s"'<>]+)$/.test(src) ? src : null;
+    const STATUS = {
+      completed: "Completed",
+      in_progress: "In progress",
+      upcoming: "Upcoming",
+    };
+    const showEmpty = () => root.replaceChildren(el("p", "progress-empty",
+      "Our first construction update will be posted here soon. For the latest status, message the project team on WhatsApp."));
+
+    if (!db) { showEmpty(); return; }
+
+    let data;
+    try {
+      const snap = await getDoc(doc(db, "progress", "current"));
+      if (!snap.exists()) { showEmpty(); return; }
+      data = snap.data();
+    } catch (err) {
+      console.error("Progress could not be loaded:", err);
+      showEmpty();
+      return;
+    }
+
+    const percent = pct(data.overallPercent);
+    const parts = [];
+
+    // Headline: big number, bar, dates, summary
+    const top = el("div", "progress-top");
+    const gauge = el("div", "progress-gauge");
+    gauge.append(el("div", "progress-number", `${percent}%`), el("div", "progress-number-label", "overall complete"));
+    const bar = el("div", "progress-bar");
+    bar.setAttribute("role", "progressbar");
+    bar.setAttribute("aria-valuemin", "0");
+    bar.setAttribute("aria-valuemax", "100");
+    bar.setAttribute("aria-valuenow", String(percent));
+    bar.setAttribute("aria-label", "Overall construction progress");
+    const fill = el("div", "progress-bar-fill");
+    fill.style.width = `${percent}%`;
+    bar.append(fill);
+    gauge.append(bar);
+    top.append(gauge);
+
+    const about = el("div", "progress-about");
+    const bits = [];
+    if (fmtDate(data.updatedAt)) bits.push(`Last updated ${fmtDate(data.updatedAt)}`);
+    if (data.estimatedCompletion) bits.push(`Estimated completion: ${data.estimatedCompletion}`);
+    if (bits.length) about.append(el("p", "progress-meta", bits.join("  ·  ")));
+    if (data.summary) about.append(el("p", "progress-summary", data.summary));
+    top.append(about);
+    parts.push(top);
+
+    // Stage-by-stage milestones
+    const milestones = Array.isArray(data.milestones) ? data.milestones : [];
+    if (milestones.length) {
+      const wrap = el("div", "progress-block");
+      wrap.append(el("h3", "progress-block-title", "Stage by stage"));
+      const list = el("ol", "progress-steps");
+      milestones.forEach((m) => {
+        const status = STATUS[m.status] ? m.status : "upcoming";
+        const item = el("li", `progress-step is-${status}`);
+        item.append(el("span", "progress-step-mark"));
+        const body = el("div", "progress-step-body");
+        body.append(el("strong", null, m.title || "Stage"));
+        if (m.note) body.append(el("span", "progress-step-note", m.note));
+        item.append(body);
+        const chip = el("span", "progress-step-chip", status === "upcoming" ? STATUS[status] : `${STATUS[status]} · ${pct(m.percent)}%`);
+        item.append(chip);
+        list.append(item);
+      });
+      wrap.append(list);
+      parts.push(wrap);
+    }
+
+    // Site photos
+    const photos = (Array.isArray(data.photos) ? data.photos : []).filter((p) => safeSrc(p.src));
+    if (photos.length) {
+      const wrap = el("div", "progress-block");
+      wrap.append(el("h3", "progress-block-title", "Latest from site"));
+      const grid = el("div", "progress-photos");
+      photos.forEach((p) => {
+        const fig = el("figure", "progress-photo");
+        const img = document.createElement("img");
+        img.src = safeSrc(p.src);
+        img.alt = p.caption ? `Construction progress: ${p.caption}` : "Construction progress photo";
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.dataset.lightbox = "";
+        img.tabIndex = 0;
+        img.setAttribute("role", "button");
+        img.setAttribute("aria-label", `View larger: ${img.alt}`);
+        img.addEventListener("click", () => openLightbox(img));
+        img.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openLightbox(img); }
+        });
+        const cap = el("figcaption", null, [fmtDate(p.date), p.caption].filter(Boolean).join("  ·  "));
+        fig.append(img, cap);
+        grid.append(fig);
+      });
+      wrap.append(grid);
+      parts.push(wrap);
+    }
+
+    root.replaceChildren(...parts);
+
+    // Progress over time (needs at least two dated updates)
+    try {
+      const snap = await getDocs(query(collection(db, "progressHistory"), orderBy("date")));
+      const points = snap.docs.map((d) => d.data()).filter((d) => d.date && Number.isFinite(Number(d.percent)));
+      if (points.length < 2) return;
+      const W = 640, H = 220, L = 44, R = 16, T = 16, B = 34;
+      const t0 = new Date(points[0].date).getTime();
+      const t1 = new Date(points[points.length - 1].date).getTime();
+      const span = Math.max(1, t1 - t0);
+      const x = (d) => L + ((new Date(d).getTime() - t0) / span) * (W - L - R);
+      const y = (v) => T + (1 - pct(v) / 100) * (H - T - B);
+      const NS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      svg.setAttribute("class", "progress-chart-svg");
+      svg.setAttribute("role", "img");
+      svg.setAttribute("aria-label", `Overall completion rose from ${pct(points[0].percent)}% on ${fmtDate(points[0].date)} to ${pct(points[points.length - 1].percent)}% on ${fmtDate(points[points.length - 1].date)}.`);
+      [0, 50, 100].forEach((g) => {
+        const line = document.createElementNS(NS, "line");
+        line.setAttribute("x1", L); line.setAttribute("x2", W - R);
+        line.setAttribute("y1", y(g)); line.setAttribute("y2", y(g));
+        line.setAttribute("class", "progress-chart-grid");
+        const label = document.createElementNS(NS, "text");
+        label.setAttribute("x", L - 8); label.setAttribute("y", y(g) + 4);
+        label.setAttribute("text-anchor", "end"); label.setAttribute("class", "progress-chart-label");
+        label.textContent = `${g}%`;
+        svg.append(line, label);
+      });
+      const path = document.createElementNS(NS, "polyline");
+      path.setAttribute("points", points.map((p) => `${x(p.date).toFixed(1)},${y(p.percent).toFixed(1)}`).join(" "));
+      path.setAttribute("class", "progress-chart-line");
+      svg.append(path);
+      points.forEach((p) => {
+        const dot = document.createElementNS(NS, "circle");
+        dot.setAttribute("cx", x(p.date).toFixed(1)); dot.setAttribute("cy", y(p.percent).toFixed(1));
+        dot.setAttribute("r", 3.5); dot.setAttribute("class", "progress-chart-dot");
+        svg.append(dot);
+      });
+      [[points[0], "start"], [points[points.length - 1], "end"]].forEach(([p, anchor]) => {
+        const label = document.createElementNS(NS, "text");
+        label.setAttribute("x", anchor === "start" ? L : W - R); label.setAttribute("y", H - 8);
+        label.setAttribute("text-anchor", anchor); label.setAttribute("class", "progress-chart-label");
+        label.textContent = fmtDate(p.date);
+        svg.append(label);
+      });
+      const wrap = el("div", "progress-block");
+      wrap.append(el("h3", "progress-block-title", "Progress over time"));
+      const chart = el("div", "progress-chart");
+      chart.append(svg);
+      wrap.append(chart);
+      // chart goes between the stages list and the photos
+      const photosBlock = root.querySelector(".progress-photos")?.closest(".progress-block");
+      if (photosBlock) root.insertBefore(wrap, photosBlock); else root.append(wrap);
+    } catch (err) {
+      console.error("Progress history could not be loaded:", err);
+    }
+  })();
 </script>
 
 <script>

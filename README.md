@@ -72,3 +72,14 @@ The old client-side passcode has been removed. The staff page now requires Fireb
 Public enquiry creation should be monitored for spam. Consider Firebase App Check or a server-side challenge before high-traffic deployment. Add a privacy notice, retention policy and notification workflow appropriate to the project's operating process.
 
 The motion design uses transforms and opacity. It follows the visitor's reduced-motion preference, and the content remains readable without animation.
+
+## Construction progress tracker
+
+The public **Progress** section reads `progress/current` (and `progressHistory/<date>`) from Firestore. Staff publish updates from **admin.html → Progress**:
+
+1. Set the overall %, estimated completion and a short summary.
+2. Mark each stage Completed / In progress / Upcoming.
+3. Add photos: commit the image to `assets/progress/`, then enter its path in the photo row.
+4. Click **Publish update**. Each publish also saves a dated snapshot to `progressHistory`.
+
+**Download history (CSV)** exports every snapshot in long format (`date, overall_percent, stage, stage_status, stage_percent`) for Power BI or Excel (planned-vs-actual / S-curve analysis). Re-publish `firestore.rules` after pulling this change, otherwise publishing will be rejected.

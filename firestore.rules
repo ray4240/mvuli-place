@@ -29,6 +29,29 @@ service cloud.firestore {
         request.resource.data.createdAt == request.time;
     }
 
+    function validProgress() {
+      let d = request.resource.data;
+      return d.keys().hasOnly([
+          'overallPercent', 'summary', 'estimatedCompletion', 'milestones', 'photos', 'updatedAt'
+        ]) &&
+        d.overallPercent is number &&
+        d.overallPercent >= 0 && d.overallPercent <= 100 &&
+        d.summary is string && d.summary.size() <= 600 &&
+        d.estimatedCompletion is string && d.estimatedCompletion.size() <= 60 &&
+        d.milestones is list && d.milestones.size() <= 20 &&
+        d.photos is list && d.photos.size() <= 30 &&
+        d.updatedAt == request.time;
+    }
+
+    function validProgressHistory(date) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['date', 'percent', 'milestones', 'updatedAt']) &&
+        d.date is string && d.date == date && d.date.size() == 10 &&
+        d.percent is number && d.percent >= 0 && d.percent <= 100 &&
+        d.milestones is list && d.milestones.size() <= 20 &&
+        d.updatedAt == request.time;
+    }
+
     match /inquiries/{inquiryId} {
       allow create: if validInquiry();
       allow get, list: if isStaff();
@@ -38,6 +61,19 @@ service cloud.firestore {
     match /units/{unitId} {
       allow get, list: if true;
       allow create, update: if isStaff();
+      allow delete: if false;
+    }
+
+    // Public construction progress: anyone can read, only active staff can publish.
+    match /progress/{progressId} {
+      allow get, list: if true;
+      allow create, update: if isStaff() && progressId == 'current' && validProgress();
+      allow delete: if false;
+    }
+
+    match /progressHistory/{day} {
+      allow get, list: if true;
+      allow create, update: if isStaff() && validProgressHistory(day);
       allow delete: if false;
     }
 
