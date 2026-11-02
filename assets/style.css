@@ -1770,3 +1770,24 @@ table.admin-table select { min-width: 118px; min-height: 35px; padding: 6px 8px;
 .stage-card.active {
   border-left: 4px solid #6b240c;
 }
+/* Smart Hide/Show Navbar Transition */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff; /* Ensures background is solid when fixed */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform 0.35s ease-in-out;
+}
+
+/* Class toggled by JavaScript when scrolling down */
+.nav.nav-hidden {
+  transform: translateY(-100%);
+}
+
+/* Add top padding to body so content doesn't jump behind the fixed nav */
+body {
+  padding-top: 80px; 
+}

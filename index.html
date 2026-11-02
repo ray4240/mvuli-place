@@ -72,16 +72,18 @@
 
 <main id="main-content">
 <header class="hero">
- <div class="slideshow-bg">
-  <div class="slide active" style="background-image: url('assets/site-progress-1.jpeg');"></div>
-  <div class="slide" style="background-image: url('assets/site-progress-2.jpeg');"></div>
-  <div class="slide" style="background-image: url('assets/site-progress-3.jpeg');"></div>
-  <div class="slide" style="background-image: url('assets/junction-mall-1.jpg');"></div>
-  <div class="slide" style="background-image: url('assets/moi-highschool.jpg');"></div>
-  <div class="slide" style="background-image: url('assets/talanta-stadium.webp');"></div>
-  <div class="slide" style="background-image: url('assets/karen-hospital.jpg');"></div>
-</div>
-
+<div class="slideshow-bg">
+        <div class="slide active" style="background-image: url('assets/hero-exterior.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/talanta-stadium.webp');"></div>
+        <div class="slide" style="background-image: url('assets/exterior-angle.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/junction-mall-1.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/aerial-exterior.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/riruta-primary.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/exterior-angle.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/police-riruta.webp');"></div>
+        <div class="slide" style="background-image: url('assets/render-typical-floor.jpeg');"></div>
+        <div class="slide" style="background-image: url('assets/riruta-health.png');"></div>
+      </div>
   <div class="hero-content">
     <div class="status-pill"><span class="status-project">Explore Mvuli Place</span><span class="status-c">...</span></div>
     <div class="hero-eyebrow">A Project by NACHU <span>Built by Placemakers Kenya Ltd</span></div>
@@ -118,12 +120,12 @@
         <p>Take a look at the layouts and indicative payment stages below. For current construction progress, available units and confirmed terms, speak with the project team before making a commitment.</p>
       </div>
     </div>
-    <div class="about-rotator" id="about-rotator" role="img" aria-label="Exterior views of Mvuli Place">
-    <img src="assets/exterior-angle.jpg" alt="" class="is-active" loading="lazy" decoding="async">
-  <img src="assets/talanta-stadium.webp" alt="" loading="lazy" decoding="async">
-  <img src="assets/hero-exterior.jpg" alt="" loading="lazy" decoding="async">
-      <div class="about-rotator-dots" id="about-rotator-dots"></div>
-    </div>
+   <div class="about-rotator" id="about-rotator" role="img" aria-label="Exterior views of Mvuli Place">
+  <img src="assets/hero-exterior.jpg" alt="" class="is-active" loading="lazy" decoding="async">
+  <img src="assets/aerial-exterior.jpg" alt="" loading="lazy" decoding="async">
+  <img src="assets/exterior-angle.jpg" alt="" loading="lazy" decoding="async">
+  <div class="about-rotator-dots" id="about-rotator-dots"></div>
+</div>
   </div>
 </section>
 <section id="gallery" class="section-slideshow">
@@ -1286,6 +1288,22 @@
       });
     }
   })();
+  let lastScrollTop = 0;
+const navbar = document.querySelector('.nav');
+
+window.addEventListener('scroll', function() {
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  // Scroll down more than 100px
+  if (scrollTop > lastScrollTop && scrollTop > 100) {
+    navbar.classList.add('nav-hidden');
+  } else {
+    // Scrolling up
+    navbar.classList.remove('nav-hidden');
+  }
+  
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+}, false);
 </script>
 </body>
 </html>
