@@ -1791,3 +1791,14 @@ table.admin-table select { min-width: 118px; min-height: 35px; padding: 6px 8px;
 body {
   padding-top: 80px; 
 }
+/* Default layout: 5 columns for landscape/wide screens */
+.icon-feature-grid {
+  grid-template-columns: repeat(5, 1fr) !important;
+}
+
+/* Switch to 2 columns on narrower screens or portrait mode */
+@media (max-width: 1200px) {
+  .icon-feature-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
